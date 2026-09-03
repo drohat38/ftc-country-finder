@@ -1,43 +1,40 @@
 # Five-minute demo for Nick
 
-## 1. Show the page (1 min)
+## 1. Show the finder (1 min)
 
 Open https://ftc-country-finder.netlify.app.
 
-Say: "This is the Feed The Country finder. Same idea as the monthly map: volunteers pick their city and register on Eventbrite. The difference is the map is drawn in the page, so there's no Google Maps key to manage."
+Say: "This is the Feed The Country finder. It's the same finder volunteers already use for the monthly events, so nothing new to learn. The difference is where the data comes from: it pulls straight from Eventbrite."
 
 Show:
-- Click **Texas** on the map. The list narrows to Texas. Click **Show all states**.
-- Type **Miami** in search. A "Coming soon" card with **Notify me**.
-- Click the **Monthly chapters** chip, then **One-day hosts**.
-- Click a **Register** button. Eventbrite opens in a new tab.
+- Type **75201** and press Search. The list reorders by distance and the map zooms to Dallas.
+- Type **Texas**. The list narrows to Texas.
+- Click a pin. The card pops up with Register and Directions.
+- Click **Filters**: pick a state, or show only "Coming soon".
+- On your phone: the list is a bottom sheet, one finger scrolls the page, two fingers move the map.
 
-## 2. Show the Sheet (2 min)
+## 2. Show that Eventbrite drives it (2 min)
 
-Open the Sheet: https://docs.google.com/spreadsheets/d/18plECfE3DnjTu_31KXJABJA-I7uTCNqrCv8Ndf8OsT4/edit
+Open Eventbrite → Manage events.
 
-Say: "This is the only thing you edit. One row per city. The page reads it every 10 minutes."
+Say: "Every Feed The Country event you create here shows up on the finder within about five minutes. Title it 'Feed The Country' plus the city, set the venue, publish. That's the whole job."
 
 Show:
-- Change a Venue. Refresh the page. Find the card, it changed. Change it back.
-- Set **Paused** to Yes on a row. Refresh. The city is gone. Set it back to No.
-- Paste an Eventbrite link into a "Coming soon" row (or point at one that has a link). Status flips to Live and the card gets Register.
-- Point at the **Status** column: "Green means live, gold means coming soon, grey means hidden. Hover a Status cell and it tells you why."
+- Point at an event title: "Feed The Country Denton: …" → the finder card says Denton, TX.
+- Point at the venue → the card's venue, address, and Directions come from here.
+- Point at tickets sold → the card says "45 signed up · 12 spots left".
+- A draft event → shows as "Coming soon" with a Notify me button instead of Register.
 
-## 3. Show the menu (1 min)
+## 3. The three rules (30 sec)
 
-**Feed The Country Tools** menu:
-- "Fill coordinates" places the dot on the map from the address.
-- "Eventbrite sync" can fill venues and times from Eventbrite automatically. Optional. Deven sets it up.
+1. Title starts with **Feed The Country** + city.
+2. **Draft** = Coming soon. **Published** = Register.
+3. **Cancel or delete** on Eventbrite = gone from the finder.
 
-## 4. Explain Wix (30 sec)
+## 4. The optional Sheet (30 sec)
 
-Say: "In Wix, this is embedded by web address, like the monthly map. You never re-paste code. Event changes go in the Sheet; the Wix page only changes if you want to change the words around it."
+Say: "There's also a Google Sheet if you ever want to add a host name to a card or hide a city without touching Eventbrite. You don't have to use it."
 
-## 5. The one rule
+## 5. After the event (30 sec)
 
-Say: "If a row says Live, it shows with a Register button. If it says Coming soon, it shows with Notify me. If you want it gone, Paused = Yes."
-
-## 6. After the event
-
-Say: "On September 20 the page switches itself to a thank-you view with a link to the monthly finder. Nothing to do that morning."
+Say: "On September 20 the finder switches itself to a thank-you view with a link to the monthly finder. Nothing to do that morning."
