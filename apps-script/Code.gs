@@ -52,8 +52,9 @@ function getSheet_() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var sh = ss.getSheetByName(CONFIG.SHEET_NAME);
   if (!sh) {
-    sh = ss.getSheets()[0];
-    if (sh.getLastRow() === 0 || sh.getName() === 'Sheet1') sh.setName(CONFIG.SHEET_NAME);
+    // First run: the tab is still named after the imported file. Adopt it if it is the only real tab.
+    var candidates = ss.getSheets().filter(function (s) { return s.getName() !== 'Sync Report'; });
+    if (candidates.length === 1) { sh = candidates[0]; sh.setName(CONFIG.SHEET_NAME); }
     else throw new Error('No tab named "' + CONFIG.SHEET_NAME + '". Rename the events tab to Events.');
   }
   return sh;

@@ -1,13 +1,13 @@
 // Feed The Country Event Finder — environment values.
 // This is the ONLY file that changes between environments. Everything else reads from here.
 window.FTC_COUNTRY_CONFIG = {
-  // Published-to-web CSV of the "Events" tab in the Google Sheet "Feed The Country Events".
-  // Blank until the Sheet is published; the page then falls back to seedUrl.
-  csvUrl: "",
+  // The Google Sheet "Feed The Country Events" (Deven's Drive > Feed The Country Finder).
+  // Sheet id 18plECfE3DnjTu_31KXJABJA-I7uTCNqrCv8Ndf8OsT4, first tab (gid=0) = Events.
+  // Both URLs work as soon as the Sheet is shared as "Anyone with the link: Viewer".
+  csvUrl: "https://docs.google.com/spreadsheets/d/18plECfE3DnjTu_31KXJABJA-I7uTCNqrCv8Ndf8OsT4/gviz/tq?tqx=out:csv&gid=0",
 
   // Same tab as JSONP, used only if the CSV fetch is blocked (Wix iframe quirks).
-  // Shape: https://docs.google.com/spreadsheets/d/<SHEET_ID>/gviz/tq?gid=0&tqx=out:json;responseHandler:ftcCountryLoaded
-  gvizUrl: "",
+  gvizUrl: "https://docs.google.com/spreadsheets/d/18plECfE3DnjTu_31KXJABJA-I7uTCNqrCv8Ndf8OsT4/gviz/tq?gid=0&tqx=out:json;responseHandler:ftcCountryLoaded",
 
   // Snapshot shipped with the site (2026-09-02). Used when Google cannot be reached.
   seedUrl: "seed/events.csv",
