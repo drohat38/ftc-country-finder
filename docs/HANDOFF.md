@@ -4,7 +4,7 @@ Built 2 September 2026 by Deven Rohatgi for Tango Charities. Nothing on the Wix 
 
 ## What it is
 
-A page that lists every Feed The Country event (Saturday, September 19, 2026) with a clickable map of the US, a search box, and a Register button for each city that goes to its Eventbrite page. It reads a Google Sheet, so updating an event means editing a row, not editing Wix.
+A section that lists every Feed The Country event (Saturday, September 19, 2026) with a clickable map of the US, a search box, and a Register button for each city that goes to its Eventbrite page. It is styled to look like part of the Feed The Country page (same navy, same orange Anton headings, same square buttons) and goes directly under the Feed The Country hero graphic, so finding an event is the first thing a visitor sees. The rest of the Wix page stays exactly as Nick has it. It reads a Google Sheet, so updating an event means editing a row, not editing Wix.
 
 Cities with no Eventbrite link yet show as "Coming soon" with a Notify me button instead of disappearing or sitting as dead text.
 

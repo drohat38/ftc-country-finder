@@ -3,6 +3,7 @@
 Every user-visible change, newest first. Written so Nick can read it.
 
 ## 2026-09-02
+- **Restyled to match the Feed The Country page.** Deven said the first version looked too different. It now uses the page's own navy background, orange Anton headings, gold date line, Poppins counters, Avenir-style body text and square orange buttons, and is meant to sit directly under the Feed The Country hero graphic. Map states use the Skyline Blue from the Feed The Country lockup.
 - **Finder page built.** Navy hero with live counts and a countdown, a clickable US map drawn in the page (states with events in Skyline Blue, orange dots for open registration, gold for coming soon), search, filter chips, and state-by-state cards with Register buttons. Cities without an Eventbrite link show "Coming soon" with a Notify me button.
 - **Reads the Google Sheet "Feed The Country Events".** Falls back to the saved September 2 list if Google cannot be reached, and says so in a banner.
 - **Sheet tools installed.** "Feed The Country Tools" menu: statuses, coordinates from the address, link tidying, hidden technical columns, and an optional hourly Eventbrite sync (needs a token; see docs/EVENTBRITE_SYNC.md).

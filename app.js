@@ -238,7 +238,7 @@
       gd.appendChild(c);
     });
     $("map-reset").classList.toggle("hidden", !state.stateSel);
-    $("map-hint").textContent = state.stateSel ? "Showing " + (STATES[state.stateSel] || state.stateSel) + "." : "Tap a state to see its cities.";
+    $("map-hint").textContent = state.stateSel ? "Showing " + (STATES[state.stateSel] || state.stateSel) + "." : "Click a state to see its cities.";
   }
 
   /* ---------- list ---------- */
@@ -344,13 +344,14 @@
     document.getElementById("finder").classList.toggle("after", state.after);
     if (state.after) {
       $("stat-days").textContent = visible.filter(function (r) { return r.live; }).length;
-      $("stat-days-label").textContent = "events held";
+      $("stat-days-label").textContent = "Events held";
       $("hero-eyebrow").textContent = "Thank you · " + (CFG.eventLabel || "");
       $("hero-title").textContent = "One morning. One nation. Thank you for showing up.";
       $("hero-sub").textContent = "Feed The Country is done for this year, but hunger isn't. Most of these cities host a Feed The City event every month. Find yours and keep going.";
     } else {
       $("stat-days").textContent = days === 0 ? "Today" : days;
-      $("stat-days-label").textContent = days === 0 ? "" : (days === 1 ? "day to go" : "days to go");
+      $("stat-days-label").textContent = days === 0 ? "Today" : (days === 1 ? "Day to go" : "Days to go");
+      if (days === 0) $("stat-days").textContent = "0";
       $("hero-eyebrow").textContent = CFG.eventLabel || "";
     }
   }

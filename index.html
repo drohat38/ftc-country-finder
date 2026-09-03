@@ -7,53 +7,52 @@
 <meta name="description" content="Find your Feed The Country event on Saturday, September 19, 2026 and register on Eventbrite.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Poppins:wght@600;700&family=Barlow:wght@400;500;600&display=swap">
-<link rel="stylesheet" href="styles.css?v=2">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Poppins:wght@600;700&family=Nunito+Sans:wght@300;400;700;800&display=swap">
+<link rel="stylesheet" href="styles.css?v=3">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 </head>
 <body>
 <main class="finder" id="finder">
 
-  <header class="hero">
-    <div class="hero-inner">
-      <img class="hero-logo" src="assets/tc-white.png" alt="Tango Charities" width="120" height="45">
-      <p class="eyebrow" id="hero-eyebrow">Saturday, September 19, 2026</p>
-      <h2 class="hero-title" id="hero-title">Find your city. Pack meals. Feed families.</h2>
-      <p class="hero-sub" id="hero-sub">Every Feed The Country event happens the same morning. Pick your city below, register on Eventbrite, and bring the items listed on the event page.</p>
-      <ul class="stats" id="stats" aria-live="polite">
-        <li><b id="stat-cities">–</b><span>cities</span></li>
-        <li><b id="stat-states">–</b><span>states</span></li>
-        <li><b id="stat-days">–</b><span id="stat-days-label">days to go</span></li>
-      </ul>
-    </div>
+  <header class="intro">
+    <p class="kicker" id="hero-eyebrow">Saturday, September 19, 2026</p>
+    <h2 class="title" id="hero-title">Find Your Feed The Country Event</h2>
+    <p class="lede" id="hero-sub">Click your city to register on Eventbrite, then bring the items listed on the event page. All ages are welcome.</p>
+    <ul class="stats" id="stats" aria-live="polite">
+      <li><b id="stat-cities">–</b><span>Cities</span></li>
+      <li><b id="stat-states">–</b><span>States</span></li>
+      <li><b id="stat-days">–</b><span id="stat-days-label">Days to go</span></li>
+    </ul>
   </header>
 
   <section class="map-section" aria-label="Map of Feed The Country cities">
-    <div class="map-head">
-      <p class="section-label">Where we're packing</p>
-      <p class="map-hint" id="map-hint">Tap a state to see its cities.</p>
-      <button class="link-btn hidden" id="map-reset" type="button">Show all states</button>
-    </div>
     <div class="map-wrap" id="map-wrap">
       <!-- SVG is built by app.js from us-states.js -->
     </div>
-    <ul class="legend" aria-label="Legend">
-      <li><i class="dot dot-live"></i>Registration open</li>
-      <li><i class="dot dot-soon"></i>Coming soon</li>
-      <li><i class="swatch swatch-has"></i>State with events</li>
-    </ul>
+    <div class="map-foot">
+      <ul class="legend" aria-label="Legend">
+        <li><i class="dot dot-live"></i>Registration open</li>
+        <li><i class="dot dot-soon"></i>Coming soon</li>
+        <li><i class="swatch swatch-has"></i>State with events</li>
+      </ul>
+      <p class="map-hint" id="map-hint">Click a state to see its cities.</p>
+      <button class="link-btn hidden" id="map-reset" type="button">Show all states</button>
+    </div>
   </section>
 
   <section class="controls" aria-label="Search and filter">
-    <label class="search">
-      <span class="visually-hidden">Search by city, state, venue, or ZIP</span>
-      <input id="q" type="search" placeholder="Search city, state, venue, or ZIP" autocomplete="off" spellcheck="false">
-    </label>
-    <div class="chips" role="group" aria-label="Filter events">
-      <button class="chip" type="button" data-filter="all" aria-pressed="true">All</button>
-      <button class="chip" type="button" data-filter="chapter" aria-pressed="false">Monthly chapters</button>
-      <button class="chip" type="button" data-filter="oneday" aria-pressed="false">One-day hosts</button>
-      <button class="chip" type="button" data-filter="soon" aria-pressed="false">Coming soon</button>
+    <h3 class="click-line">Click on the city below to register!</h3>
+    <div class="controls-row">
+      <label class="search">
+        <span class="visually-hidden">Search by city, state, venue, or ZIP</span>
+        <input id="q" type="search" placeholder="Search city, state, venue, or ZIP" autocomplete="off" spellcheck="false">
+      </label>
+      <div class="chips" role="group" aria-label="Filter events">
+        <button class="chip" type="button" data-filter="all" aria-pressed="true">All</button>
+        <button class="chip" type="button" data-filter="chapter" aria-pressed="false">Monthly chapters</button>
+        <button class="chip" type="button" data-filter="oneday" aria-pressed="false">One-day hosts</button>
+        <button class="chip" type="button" data-filter="soon" aria-pressed="false">Coming soon</button>
+      </div>
     </div>
     <p class="count" id="count" aria-live="polite">Loading events…</p>
   </section>
@@ -78,8 +77,8 @@
 
 </main>
 
-<script src="config.js?v=2"></script>
-<script src="us-states.js?v=2"></script>
-<script src="app.js?v=2"></script>
+<script src="config.js?v=3"></script>
+<script src="us-states.js?v=3"></script>
+<script src="app.js?v=3"></script>
 </body>
 </html>

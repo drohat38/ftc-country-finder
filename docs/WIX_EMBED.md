@@ -2,25 +2,25 @@
 
 The finder lives at **https://ftc-country-finder.netlify.app**. In Wix you embed it by web address, so the Wix page never needs to change again when events change.
 
-It replaces only the "CLICK ON THE CITY BELOW TO REGISTER!" block and the state-by-state list under it. Everything else on tangocharities.org/country stays as it is.
+It is styled to look like part of the Feed The Country page: the same navy, the same orange Anton headings, square orange buttons, and the Skyline Blue US map from the Feed The Country lockup. Put it **directly under the Feed The Country hero graphic** (above "Over 100 Feed The City Events Happening In One Morning") so finding an event is the first thing a visitor sees. Everything else on the page stays where it is; only the old "CLICK ON THE CITY BELOW TO REGISTER!" list near the bottom gets hidden.
 
 ## Steps (Wix Editor)
 
 1. Open the **Feed The Country** page (`/country`) in the Wix Editor.
-2. Scroll to the "Volunteer at a Feed The Country Event" section. Click the block that contains the city list.
+2. Click just below the hero (the section that starts "Over 100 Feed The City Events Happening In One Morning"). You will add the embed between the hero and that section.
 3. Add the embed: **Add Elements (+) → Embed Code → Embed a Site** (on some editors it is called "Embed HTML" → choose **Website address**). Paste:
    ```
    https://ftc-country-finder.netlify.app
    ```
 4. Size it:
    - Width: full content width (about 980 px on desktop). Stretch it to the section edges.
-   - Height: **6,600 px** on desktop (measured with 63 cities at 980 px wide). Do not leave height on "auto", Wix collapses it to a thin strip.
-   - Switch to the **mobile editor** and set the height to **11,800 px**. The list is one column on phones, so it is much taller.
+   - Height: **7,300 px** on desktop (measured with 63 cities at 980 px wide). Do not leave height on "auto", Wix collapses it to a thin strip.
+   - Switch to the **mobile editor** and set the height to **12,800 px**. The list is one column on phones, so it is much taller.
    - If Wix refuses a height that large, tell Deven; the page can collapse big states behind a "Show all" button instead.
    - The page never scrolls inside its own frame, so if Nick later adds many cities and the bottom gets cut off, add height.
-5. Move the embed to where the city list was.
-6. **Hide the old city-list block instead of deleting it** (right-click → Hide, or just drag it below the embed and shrink it) until you are happy. Delete it later.
-7. Also hide or repurpose the "Click here to volunteer with Hawkeye & Michelle at the Dallas Event" link if it is inside that block; the Dallas (North) card carries the same Eventbrite link.
+5. Drag the embed so it sits directly under the hero, full width. Give it the same navy background as the section it sits in (the embed's own background is navy #003366, so any seam disappears).
+6. Scroll down to the "Volunteer at a Feed The Country Event" section and **hide the old city-list block instead of deleting it** (right-click → Hide) until you are happy. Delete it later. You can keep that section's intro text, or replace it with one line: "Find your city at the top of this page."
+7. Also hide or move the "Click here to volunteer with Hawkeye & Michelle at the Dallas Event" link if it is inside that block; the Dallas (North) card carries the same Eventbrite link.
 8. **Preview**, test on desktop and mobile preview, then **Publish**.
 
 ## Checks after publishing
@@ -38,8 +38,8 @@ The hosting sends a `frame-ancestors` rule that allows tangocharities.org and Wi
 
 | Cities in the Sheet | Desktop height | Mobile height |
 |---|---|---|
-| Up to 70 | 7,000 px | 13,000 px |
-| Up to 100 | 10,000 px | 18,500 px |
-| Up to 150 | 15,000 px | 27,500 px |
+| Up to 70 | 7,800 px | 14,000 px |
+| Up to 100 | 10,800 px | 19,500 px |
+| Up to 150 | 15,800 px | 28,500 px |
 
-Rule of thumb: about 100 px per city on desktop and 185 px per city on mobile, plus 600 px for the header, map and search.
+Rule of thumb: about 100 px per city on desktop and 185 px per city on mobile, plus 1,300 px for the heading, counts, map and search.
