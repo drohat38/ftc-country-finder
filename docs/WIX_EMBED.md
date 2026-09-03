@@ -14,10 +14,9 @@ It is styled to look like part of the Feed The Country page: the same navy, the 
    ```
 4. Size it:
    - Width: full content width (about 980 px on desktop). Stretch it to the section edges.
-   - Height: **7,900 px** on desktop (measured with 63 cities at 980 px wide). Do not leave height on "auto", Wix collapses it to a thin strip.
-   - Switch to the **mobile editor** and set the height to **14,800 px**. The list is one column on phones, so it is much taller.
-   - If Wix refuses a height that large, tell Deven; the page can collapse big states behind a "Show all" button instead.
-   - The page never scrolls inside its own frame, so if Nick later adds many cities and the bottom gets cut off, add height.
+   - Height: **1,800 px** on desktop. Do not leave height on "auto", Wix collapses it to a thin strip.
+   - Switch to the **mobile editor** and set the height to **1,650 px**.
+   - The embed stays this height no matter how many cities are added: the city list scrolls inside its own box, so the Wix page keeps scrolling normally on a phone.
 5. Drag the embed so it sits directly under the hero, full width. Give it the same navy background as the section it sits in (the embed's own background is navy #003366, so any seam disappears).
 6. Scroll down to the "Volunteer at a Feed The Country Event" section and **hide the old city-list block instead of deleting it** (right-click → Hide) until you are happy. Delete it later. You can keep that section's intro text, or replace it with one line: "Find your city at the top of this page."
 7. Also hide or move the "Click here to volunteer with Hawkeye & Michelle at the Dallas Event" link if it is inside that block; the Dallas (North) card carries the same Eventbrite link.
@@ -34,12 +33,6 @@ It is styled to look like part of the Feed The Country page: the same navy, the 
 
 The hosting sends a `frame-ancestors` rule that allows tangocharities.org and Wix's own domains to frame it, and nothing else. If Wix ever moves to a new domain and the embed shows blank, Deven adds that domain in `netlify.toml`.
 
-## Height cheat sheet
+## Height
 
-| Cities in the Sheet | Desktop height | Mobile height |
-|---|---|---|
-| Up to 70 | 8,500 px | 16,000 px |
-| Up to 100 | 11,500 px | 22,500 px |
-| Up to 150 | 16,500 px | 33,000 px |
-
-Rule of thumb: about 100 px per city on desktop and 215 px per city on mobile, plus 1,600 px for the heading, counts, map, inset and search.
+The embed is a fixed height (1,800 px desktop, 1,650 px mobile) regardless of how many cities are in the Sheet. The list scrolls inside its own box. If the "What every volunteer brings" text in Settings gets much longer, add about 20 px per extra line.
