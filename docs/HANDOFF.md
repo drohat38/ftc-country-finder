@@ -40,7 +40,7 @@ Eventbrite (source of truth)  →  Netlify function /api/events (holds the token
    ```
    (and `http://localhost:8080/*` if you want to test locally). Until then the list works but the map area shows a "Map key needs this site" card. If you would rather not touch the existing key, create a new key in the same project with Maps JavaScript API + Geocoding API enabled and those referrers, and put it in `config.js` as `googleMapsKey`.
 3. **Embed in Wix.** Follow "4 - Wix Embed Steps".
-4. **Optional: share the Sheet** (Anyone with the link: Viewer) if you want Host names or manual hides. Otherwise skip it.
+4. **Run Setup in the Sheet once** (Feed The Country Tools → Setup & repair → Setup / repair sheet, authorize when asked). This authorizes the script that saves Notify me signups and creates the Notify me tab. Then, optionally, share the Sheet (Anyone with the link: Viewer) if you want Host names or manual hides to show on the finder.
 
 ## Day to day (Nick)
 
@@ -58,6 +58,10 @@ The city name comes from the title: whatever sits between "Feed The Country" and
 - The Eventbrite page for **Dallas (Lakewood)** lists the Prosper venue and address. Fix it on Eventbrite; the finder will follow.
 - 14 cities on the Wix page had no Eventbrite event on September 2 (Gilbert AZ, Danbury CT, Miami FL, Ocala FL, Jackson MS, Howell Township NJ, Selden NY, Vestal NY, Oklahoma City OK, Chattanooga TN, Lufkin TX, Pearland TX, The Colony TX, Weatherford TX). They are in the seed and the Sheet as Coming soon. The clean fix: create a draft Eventbrite event for each so they live in one place.
 - Wix copy contradictions are listed in "6 - Wix Copy Fixes".
+
+## "Notify me" signups
+
+On a Coming soon city, volunteers type their email into the card. Each signup lands in the **Notify me** tab of the Google Sheet (timestamp, email, city, state). Put Nick's address in the Settings tab as `notify_email` and he also gets an email per signup. When a city goes live on Eventbrite, email the people listed for that city with the Register link. This needs the script authorized once (step 4 below happens automatically when you run Setup).
 
 ## After September 19
 

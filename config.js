@@ -29,8 +29,11 @@ window.FTC_COUNTRY_CONFIG = {
   // Short line shown in each event's details. The Settings tab key what_to_bring overrides it.
   whatToBring: "Bring enough for 25–30 meals: sliced bread, deli meat, sliced cheese, yellow mustard, tangerines, a large bag of chips, and zip-top bags. Full list on Eventbrite.",
 
-  // Where a "Coming soon" city sends people. Settings tab key notify_url overrides it.
-  notifyUrl: "https://www.tangocharities.org/country",
+  // "Notify me" on a Coming soon city: the finder shows an email box and POSTs the signup here.
+  // This is the Sheet's own Apps Script deployed as a web app (apps-script/Notify.gs). Signups land in the
+  // Sheet's "Notify me" tab; Settings key notify_email gets a message per signup. Settings key notify_url,
+  // if set, makes the button open that link instead of showing the box.
+  notifyPostUrl: "https://script.google.com/macros/s/AKfycbzbf_dEogzEEL3F6E9ziiULheVm_YFLsztQocshx2ocyXvjuq_IUns3q3u_dgElWiIpfA/exec",
 
   // Where the page sends people after the event is over.
   monthlyFinderUrl: "https://www.tangocharities.org/feed-the-city",

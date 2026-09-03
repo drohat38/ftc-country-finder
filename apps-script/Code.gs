@@ -25,7 +25,8 @@ var CONFIG = {
   SETTINGS_SHEET: 'Settings',
   SETTINGS: [
     ['what_to_bring', 'Enough for 25–30 meals: sliced bread (wheat preferred), pre-packaged deli meat, sliced cheese, yellow mustard, easy-peel tangerines, a large bag of chips, and zip-top sandwich bags. The first 30 minutes are arrival time; packing starts after that. Full details on each event\'s Eventbrite page.', 'One line shown above the city list on the finder.'],
-    ['notify_url', 'https://www.tangocharities.org/country', 'Where the "Notify me" button on a Coming soon city goes. Paste a Google Form link here.'],
+    ['notify_email', '', 'Optional. Email address that gets a message each time someone clicks "Notify me" on a Coming soon city. Signups always land in the "Notify me" tab.'],
+    ['notify_url', '', 'Optional. Leave blank: the finder shows its own email box. Put a link here only if you want "Notify me" to open a form instead.'],
     ['host_url', 'https://www.tangocharities.org/start', 'Shown when someone searches a place with nothing nearby: "Bring Feed The City to your town".'],
     ['hero_note', '', 'Optional. Replaces the sentence under the big title on the finder. Leave blank for the default.'],
     ['thank_you_note', '', 'Optional. The sentence shown after September 19. Leave blank for the default.']
@@ -247,6 +248,7 @@ function setupSheet() {
     for (var r = 2; r <= sh.getLastRow(); r++) updateRowStatus_(sh, map, r);
     applyFormatting_(sh, map);
     buildSettings_();
+    ensureNotifySheet_();
     buildStartHere_();
     SpreadsheetApp.getActiveSpreadsheet().setActiveSheet(sh);
     toast_('Sheet is set up. Next: Feed The Country Tools > Setup & repair > Install auto-update trigger.');

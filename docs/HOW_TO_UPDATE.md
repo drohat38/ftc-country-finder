@@ -50,13 +50,17 @@ Tick the **Paused** box. The row stays in the Sheet, the city disappears from th
 
 Paste the Eventbrite link into `EventbriteURL`. The link tidies itself (https, and the `aff=oddtdtcreator` tracking code so Eventbrite reports stay complete) and the card flips to Register.
 
+## "Notify me" signups
+
+The **Notify me** tab fills up by itself: one row per person who asked to be told when a Coming soon city opens (timestamp, email, city, state). Put your own address in the Settings tab as `notify_email` to get an email each time. When a city goes live, filter the tab by that city and email those people the Register link.
+
 ## Words and links on the finder (Settings tab)
 
 The **Settings** tab has a few Key / Value rows. Edit the Value column only:
 
 - `what_to_bring` — the one-line shopping list shown in each event's details card.
-- `notify_url` — where the "Notify me" button on a Coming soon city goes (a Google Form link works).
-- `notify_url` is the only other one the finder reads today.
+- `notify_email` — your address, to get an email per Notify me signup.
+- `notify_url` — leave blank. Only fill it if you want the Notify me button to open a form somewhere else instead of the built-in email box.
 
 ## Registered and Capacity
 

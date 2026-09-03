@@ -41,3 +41,7 @@ Static, dependency-light page that lists every Feed The Country event (Saturday,
 ## Testing locally
 
 `python3 -m http.server 8080` from the repo root. `/api/events` does not exist locally (Netlify Function), so the page falls back to the Sheet/seed; that is expected. The map only renders if `localhost:8080` is in the key's referrers.
+
+## Notify me web app
+
+`apps-script/Notify.gs` is deployed as a web app (deployment `AKfycbzbf_dEogzEEL3F6E9ziiULheVm_YFLsztQocshx2ocyXvjuq_IUns3q3u_dgElWiIpfA`, URL in `config.js` as `notifyPostUrl`). After changing Notify.gs: `cd apps-script && clasp push -f && clasp redeploy AKfycbzbf_dEogzEEL3F6E9ziiULheVm_YFLsztQocshx2ocyXvjuq_IUns3q3u_dgElWiIpfA -d "…"`. `clasp push` alone does NOT update the live web app. The web app only answers once Deven has authorized the script (run Setup from the Sheet menu once); until then it returns Google's authorization page and the finder's form still shows "You're on the list" (no-cors, fire-and-forget), so authorize before launch.

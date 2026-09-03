@@ -3,6 +3,7 @@
 Every user-visible change, newest first. Written so Nick can read it.
 
 ## 2026-09-03
+- **Notify me now works.** On a Coming soon city the button opens an email box inside the card; the signup is saved to a new "Notify me" tab in the Google Sheet through the Sheet's script (deployed as a web app), with duplicate and flood protection and a honeypot. Set `notify_email` on the Settings tab to get an email per signup. Deven asked for this and for **Directions to be removed** from cards, info windows and the phone sheet; done.
 - **Rebuilt on the monthly map's design and on the Eventbrite API.** Deven pointed at the monthly Feed The City event map as the standard: the finder is now that same app (Google Maps, orange brand bar, search + list panel, mobile bottom sheet, filters) adapted for Feed The Country. Events come straight from Eventbrite through a new Netlify Function at /api/events; the Eventbrite token lives only in a Netlify environment variable. The Google Sheet is now an optional overrides layer; the seed CSV is the last resort. Draft Eventbrite events show as Coming soon; live ones show Register with signed-up and spots-left counts. Removed the drawn SVG map, the MapLibre version, the ZIP/city lookup tables, and the separate styles/app files.
 - **Needs from Deven before the map renders:** add https://ftc-country-finder.netlify.app/* to the Google Maps key's referrers (or create a new key), and add EVENTBRITE_TOKEN to Netlify. Everything else works without them.
 
