@@ -14,8 +14,9 @@ It replaces only the "CLICK ON THE CITY BELOW TO REGISTER!" block and the state-
    ```
 4. Size it:
    - Width: full content width (about 980 px on desktop). Stretch it to the section edges.
-   - Height: **2,900 px** on desktop. Do not leave height on "auto", Wix collapses it to a thin strip.
-   - Switch to the **mobile editor** and set the height to **5,200 px**. The list is one column on phones, so it is taller.
+   - Height: **6,600 px** on desktop (measured with 63 cities at 980 px wide). Do not leave height on "auto", Wix collapses it to a thin strip.
+   - Switch to the **mobile editor** and set the height to **11,800 px**. The list is one column on phones, so it is much taller.
+   - If Wix refuses a height that large, tell Deven; the page can collapse big states behind a "Show all" button instead.
    - The page never scrolls inside its own frame, so if Nick later adds many cities and the bottom gets cut off, add height.
 5. Move the embed to where the city list was.
 6. **Hide the old city-list block instead of deleting it** (right-click → Hide, or just drag it below the embed and shrink it) until you are happy. Delete it later.
@@ -37,6 +38,8 @@ The hosting sends a `frame-ancestors` rule that allows tangocharities.org and Wi
 
 | Cities in the Sheet | Desktop height | Mobile height |
 |---|---|---|
-| Up to 70 | 2,900 px | 5,200 px |
-| Up to 100 | 3,600 px | 7,000 px |
-| Up to 150 | 4,800 px | 9,800 px |
+| Up to 70 | 7,000 px | 13,000 px |
+| Up to 100 | 10,000 px | 18,500 px |
+| Up to 150 | 15,000 px | 27,500 px |
+
+Rule of thumb: about 100 px per city on desktop and 185 px per city on mobile, plus 600 px for the header, map and search.
