@@ -7,87 +7,68 @@
 <meta name="description" content="Find your Feed The Country event on Saturday, September 19, 2026 and register on Eventbrite.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Poppins:wght@600;700&family=Nunito+Sans:wght@400;700;800&display=swap">
-<link rel="stylesheet" href="styles.css?v=7">
+<link rel="preconnect" href="https://tiles.openfreemap.org">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Nunito+Sans:wght@400;700;800&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/maplibre-gl/4.7.1/maplibre-gl.css">
+<link rel="stylesheet" href="styles.css?v=9">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/maplibre-gl/4.7.1/maplibre-gl.js"></script>
 </head>
 <body>
 <main class="finder" id="finder">
 
-  <header class="intro">
-    <p class="kicker" id="hero-eyebrow">Saturday, September 19, 2026</p>
-    <h2 class="title" id="hero-title">Find Your Feed The Country Event</h2>
-    <p class="lede" id="hero-sub">Tap your state or search your ZIP code, then register on Eventbrite. All ages are welcome.</p>
-    <ul class="stats" id="stats" aria-live="polite">
-      <li><b id="stat-cities">–</b><span>Cities</span></li>
-      <li><b id="stat-states">–</b><span>States</span></li>
-      <li class="hidden" id="stat-vol-wrap"><b id="stat-vol">–</b><span>Signed up</span></li>
-      <li><b id="stat-days">–</b><span id="stat-days-label">Days to go</span></li>
-    </ul>
+  <header class="head">
+    <h2 class="title" id="hero-title">Find Your Event</h2>
+    <p class="sub" id="hero-sub">Search your ZIP code or explore the map, then register on Eventbrite. All ages are welcome.</p>
   </header>
 
-  <section class="panel" aria-label="Event finder">
+  <div class="locator" id="locator">
+    <div class="map-col" id="map-col">
+      <div class="map" id="map" aria-label="Map of Feed The Country events"></div>
+      <button class="map-reset hidden" id="map-reset" type="button">Show whole country</button>
+      <p class="map-note hidden" id="map-note"></p>
+    </div>
 
-    <form class="search-row" id="search-form" autocomplete="off">
-      <label class="search">
-        <span class="visually-hidden">Search by ZIP code, city, or state</span>
-        <input id="q" type="search" placeholder="ZIP code, city, or state" autocomplete="off" spellcheck="false" enterkeyhint="search">
-      </label>
-      <button class="btn" type="submit">Search</button>
-      <button class="btn btn-outline" type="button" id="near-me">Near me</button>
-    </form>
-
-    <div class="map-block">
-      <div class="map-wrap" id="map-wrap"></div>
-      <button class="back-btn hidden" id="map-back" type="button">← All states</button>
-      <div class="map-tip hidden" id="map-tip" role="tooltip"></div>
-      <div class="map-foot">
-        <ul class="legend" aria-label="Legend">
-          <li><i class="dot dot-live"></i>Registration open</li>
-          <li><i class="dot dot-soon"></i>Coming soon</li>
-          <li><i class="bubble-key">7</i>Tap to zoom in</li>
-        </ul>
-        <p class="map-hint" id="map-hint">Tap a state or a bubble to zoom in.</p>
+    <div class="list-col">
+      <form class="search-row" id="search-form" autocomplete="off">
+        <label class="search">
+          <span class="visually-hidden">Search by ZIP code, city, or state</span>
+          <input id="q" type="search" placeholder="ZIP code, city, or state" autocomplete="off" spellcheck="false" enterkeyhint="search">
+        </label>
+        <button class="btn" type="submit">Search</button>
+        <button class="btn btn-outline" type="button" id="near-me" title="Use my location">Near me</button>
+      </form>
+      <div class="list-head" id="result-head">
+        <p class="result-title" id="result-title">Loading events…</p>
+        <p class="result-sub" id="result-sub"></p>
+        <button class="link-btn hidden" id="result-reset" type="button">Show all</button>
+      </div>
+      <div class="list-scroll" id="list-scroll" tabindex="0" aria-label="Event list, scrolls">
+        <div class="list" id="list">
+          <div class="skeleton skeleton-card"></div><div class="skeleton skeleton-card"></div><div class="skeleton skeleton-card"></div>
+        </div>
       </div>
     </div>
+  </div>
 
-    <section class="bring" id="bring" aria-label="What to bring">
-      <p class="bring-label">What every volunteer brings</p>
-      <p class="bring-text" id="bring-text">Supplies for 25–30 meals. The full list is on each event's Eventbrite page.</p>
-    </section>
+  <div class="banner hidden" id="banner" role="status"></div>
 
-    <div class="banner hidden" id="banner" role="status"></div>
-
-    <h3 class="click-line">Click on the city below to register!</h3>
-    <div class="result-head" id="result-head">
-      <p class="result-title" id="result-title">Loading events…</p>
-      <p class="result-sub" id="result-sub"></p>
-      <button class="link-btn hidden" id="result-reset" type="button">Show all events</button>
-    </div>
-
-    <div class="list-scroll" id="list-scroll" tabindex="0" aria-label="Event list, scrolls">
-      <section class="list" id="list">
-        <div class="skeleton-group">
-          <div class="skeleton skeleton-label"></div>
-          <div class="skeleton-cards"><div class="skeleton skeleton-card"></div><div class="skeleton skeleton-card"></div></div>
-        </div>
-      </section>
-    </div>
-    <p class="scroll-hint hidden" id="scroll-hint">Scroll the list for more ↓</p>
-
-    <footer class="foot">
-      <p id="updated">Powered by Tango Charities</p>
-      <p class="credit">Map: US Census Bureau · City search: GeoNames (CC BY 4.0)</p>
-      <a class="hidden" id="fullscreen-link" href="./" target="_blank" rel="noopener">Open full page</a>
-    </footer>
+  <section class="bring" id="bring" aria-label="What to bring">
+    <p class="bring-label">What every volunteer brings</p>
+    <p class="bring-text" id="bring-text">Supplies for 25–30 meals. The full list is on each event's Eventbrite page.</p>
   </section>
+
+  <footer class="foot">
+    <p id="updated">Powered by Tango Charities</p>
+    <p class="credit">City search: GeoNames (CC BY 4.0) · ZIP areas: US Census Bureau</p>
+    <a class="hidden" id="fullscreen-link" href="./" target="_blank" rel="noopener">Open full page</a>
+  </footer>
 
 </main>
 
-<script src="config.js?v=7"></script>
-<script src="us-states.js?v=7"></script>
-<script src="us-zip3.js?v=7"></script>
-<script src="us-cities.js?v=7"></script>
-<script src="app.js?v=7"></script>
+<script src="config.js?v=9"></script>
+<script src="us-zip3.js?v=9"></script>
+<script src="us-cities.js?v=9"></script>
+<script src="app.js?v=9"></script>
 </body>
 </html>

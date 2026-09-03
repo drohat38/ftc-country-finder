@@ -25,6 +25,10 @@ window.FTC_COUNTRY_CONFIG = {
   notifyUrl: "https://www.tangocharities.org/country",
   hostUrl: "https://www.tangocharities.org/start",
 
+  // Basemap style for the real map (MapLibre GL + OpenFreeMap, no API key, no usage cap).
+  // Alternatives: https://tiles.openfreemap.org/styles/positron (muted grey) or /styles/bright.
+  mapStyle: "https://tiles.openfreemap.org/styles/liberty",
+
   // Where the page sends people after the event is over.
   monthlyFinderUrl: "https://www.tangocharities.org/feed-the-city",
 
