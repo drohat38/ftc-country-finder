@@ -1,44 +1,47 @@
-# Eventbrite sync (optional)
+# The Eventbrite feed
 
-With the sync on, creating or editing a Feed The Country event on Eventbrite updates the Sheet within the hour. Nobody types a venue twice. The finder works fine without it; this is a convenience.
+The finder reads its events from Eventbrite. This is how that works and how to set it up.
 
-## What it does, exactly
+## What runs
 
-Every hour (or when you click **Sync now**), the script:
+A small program on Netlify (`netlify/functions/events.mjs`, reachable at https://ftc-country-finder.netlify.app/api/events) does this every time the finder loads, and Netlify caches the answer for 5 minutes:
 
-1. Asks Eventbrite for the Tango Charities organization's live, upcoming events.
-2. Keeps only events whose title starts with **"Feed The Country"** (any capitalization). Everything else, including monthly Feed The City events, is ignored.
-3. For each one, finds the Sheet row by Eventbrite ID, then by Eventbrite link, then by city and state.
-4. Fills **Venue, Address, Time, EventbriteURL, Latitude, Longitude, EventbriteID, LastSynced**, plus **Registered** (tickets sold) and **Capacity** so the finder can show spots left and a nationwide volunteer count. It never touches Host, HostType, Paused, or Notes, and it never deletes a row.
-5. Adds a new row for any Feed The Country event that has no row yet (as a One-day host; change HostType if it is a chapter).
-6. Writes a **Sync Report** tab: how many found, updated, added, and any it could not match.
+1. Asks Eventbrite for the Tango Charities organization's **live**, **started**, and **draft** events that are today or in the future.
+2. Keeps only events whose title starts with **"Feed The Country"** (any capitalization). Monthly Feed The City events are ignored.
+3. For each one, returns: city (from the title, before the colon), state (from the venue address), venue, address, time, Register link, whether registration is open (live or started) or coming soon (draft), tickets sold, capacity, and the venue's coordinates.
+4. Sends that list to the finder as JSON. The token is used only on the server and never sent to the browser.
 
-It only ever reads from Eventbrite (GET requests). It never creates, edits, or deletes anything on Eventbrite.
-
-Title convention that makes matching work: **"Feed The Country {City}: …"**, for example "Feed The Country Dallas (North): A Nationwide Day of Volunteering". The city part before the colon becomes the City cell.
+It only ever reads from Eventbrite (GET requests). It never creates, edits, or deletes anything.
 
 ## Setting it up (Deven, once)
 
 1. Log in to Eventbrite with the admin account.
-2. Go to **Account Settings → Developer Links → API Keys** (https://www.eventbrite.com/account-settings/apps). Click **Create API Key**. Any name and website are fine ("Feed The Country Sheet sync", https://www.tangocharities.org). It is an internal tool, so the application type does not matter.
-3. On the key you just created, copy the **Private token**. Do not put it in email or Slack.
-4. Open the Sheet → **Feed The Country Tools → Eventbrite sync → Set Eventbrite token…** → paste → OK. The script checks the token against Eventbrite right away and tells you which organization it connected to. If the token is bad, it is not kept.
-5. **Eventbrite sync → Preview sync (no changes)**. Open the Sync Report tab and read it. Preview never writes to the Events tab.
-6. If the preview looks right: **Eventbrite sync → Sync now**, then **Turn on hourly sync**.
+2. Go to **Account Settings → Developer Links → API Keys** (https://www.eventbrite.com/account-settings/apps). Click **Create API Key**. Any name and website are fine ("Feed The Country finder", https://www.tangocharities.org).
+3. On the key you just created, copy the **Private token**. Do not paste it into email, Slack, or a chat.
+4. Netlify → **ftc-country-finder** → **Site configuration → Environment variables → Add a variable**:
+   - Key: `EVENTBRITE_TOKEN`
+   - Value: the token
+   - Tick **Secret** (Netlify then hides it in its own UI too)
+   - Scopes: all, or just Functions
+5. **Deploys → Trigger deploy → Deploy site**, so the function picks up the variable.
+6. Open https://ftc-country-finder.netlify.app/api/events in a browser. You should see `"ok": true` and a `count`. Then reload the finder.
+
+Optional variables: `EVENTBRITE_ORG_ID` (skip the organizations lookup) and `EVENTBRITE_AFF` (attribution code on Register links, default `oddtdtcreator`).
 
 ## The risk, plainly
 
 An Eventbrite private token has the same power as the account that created it: it can read and change every event, order, and attendee list in that account. That is why:
 
-- The token is stored in the **User Properties of the Google account that saved it** (Deven's). Google keeps User Properties per person, so other editors of the Sheet cannot read it, not even from the script editor. It is never written to a cell, never sent to the finder page, never logged, never put in an error message, and never in the code repository.
-- Because it is tied to one account, only that account can run "Sync now" or turn on the hourly sync. The hourly sync runs as that account on its own, so Nick does not need the token for the sync to keep working. If Nick clicks "Sync now" he gets a friendly "no token saved for your account" message.
-- The sync only sends read requests. There is no code path that writes to Eventbrite.
-- You can revoke it any time from the same API Keys page. The finder keeps working from the Sheet. Use **Eventbrite sync → Forget Eventbrite token** to also turn off the hourly job.
-- Eventbrite's rate limit is 1,000 calls per hour per token. The sync uses one to three calls per run.
-- The remaining risk is the Google account that holds it. Keep two-step verification on that account.
-
-If you would rather not use a token at all, skip this document. Nick pastes Eventbrite links into the Sheet by hand and everything else still works.
+- It is stored only as a **Netlify environment variable** on this one site. It is not in the code repository, not in the finder page, not in the Sheet, not in any document. Only people who can log in to the Netlify team can see or change it.
+- The function only sends read requests. There is no code path that writes to Eventbrite.
+- The function returns only the fields listed above, never attendee names, emails, or order data.
+- You can revoke the key any time on Eventbrite's API Keys page. The finder then falls back to the Google Sheet (if shared) or the saved snapshot, and keeps working.
+- Eventbrite's rate limit is 1,000 calls per hour per token. With 5-minute caching this uses at most 36 calls an hour.
 
 ## Turning it off
 
-**Feed The Country Tools → Eventbrite sync → Turn off hourly sync.** To remove the token entirely, **Forget Eventbrite token**.
+Delete the `EVENTBRITE_TOKEN` variable in Netlify and trigger a deploy, or revoke the key on Eventbrite. The finder keeps working from the Sheet or the snapshot.
+
+## The Sheet's own sync (legacy, optional)
+
+The Google Sheet still has a **Feed The Country Tools → Eventbrite sync** menu that can pull the same data into the Sheet using a token stored in the Google account of whoever runs it. You only need it if you want the Sheet itself to stay in step with Eventbrite. The finder does not depend on it.

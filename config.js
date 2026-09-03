@@ -1,33 +1,36 @@
 // Feed The Country Event Finder — environment values.
 // This is the ONLY file that changes between environments. Everything else reads from here.
 window.FTC_COUNTRY_CONFIG = {
-  // The Google Sheet "Feed The Country Events" (Deven's Drive > Feed The Country Finder).
-  // Sheet id 18plECfE3DnjTu_31KXJABJA-I7uTCNqrCv8Ndf8OsT4, first tab (gid=0) = Events.
-  // All three URLs work as soon as the Sheet is shared as "Anyone with the link: Viewer".
-  csvUrl: "https://docs.google.com/spreadsheets/d/18plECfE3DnjTu_31KXJABJA-I7uTCNqrCv8Ndf8OsT4/gviz/tq?tqx=out:csv&gid=0",
+  // 1) Primary source: Eventbrite, through the Netlify function in netlify/functions/events.mjs.
+  //    The Eventbrite token is a Netlify environment variable (EVENTBRITE_TOKEN); it never reaches the browser.
+  apiUrl: "/api/events",
 
-  // Same tab as JSONP, used only if the CSV fetch is blocked (Wix iframe quirks).
-  gvizUrl: "https://docs.google.com/spreadsheets/d/18plECfE3DnjTu_31KXJABJA-I7uTCNqrCv8Ndf8OsT4/gviz/tq?gid=0&tqx=out:json;responseHandler:ftcCountryLoaded",
-
-  // The "Settings" tab (Key / Value). Optional: words and links Nick can change without code.
+  // 2) Fallback + overrides: the Google Sheet "Feed The Country Events" (Deven's Drive > Feed The Country Finder).
+  //    Sheet id 18plECfE3DnjTu_31KXJABJA-I7uTCNqrCv8Ndf8OsT4, first tab (gid=0) = Events.
+  //    Works as soon as the Sheet is shared as "Anyone with the link: Viewer".
+  //    Rows here fill gaps (a city with no Eventbrite event yet shows as Coming soon), add a Host name,
+  //    and Paused = Yes hides a city even if Eventbrite still lists it.
+  sheetCsvUrl: "https://docs.google.com/spreadsheets/d/18plECfE3DnjTu_31KXJABJA-I7uTCNqrCv8Ndf8OsT4/gviz/tq?tqx=out:csv&gid=0",
   settingsUrl: "https://docs.google.com/spreadsheets/d/18plECfE3DnjTu_31KXJABJA-I7uTCNqrCv8Ndf8OsT4/gviz/tq?tqx=out:csv&sheet=Settings",
 
-  // Snapshot shipped with the site (2026-09-02). Used when Google cannot be reached.
+  // 3) Last resort: snapshot shipped with the site (2026-09-02).
   seedUrl: "seed/events.csv",
 
-  // The one morning everything happens. ISO date, local time.
+  // Google Maps JavaScript API key. Same key family as the monthly Feed The City map.
+  // The key is referrer-restricted in Google Cloud Console; this site's domain must be on that list:
+  //   https://ftc-country-finder.netlify.app/*   (plus localhost for testing)
+  // A different key can be passed on the URL as ?k=YOUR_KEY (that overrides this value).
+  googleMapsKey: "AIzaSyBh58fDra3R2In7HZXKTOpQhPze1kuNbyg",
+
+  // The one morning everything happens.
   eventDate: "2026-09-19",
   eventLabel: "Saturday, September 19, 2026",
-  eventShort: "Sat, Sept 19",
 
-  // Defaults for the Settings tab keys (the Sheet wins when a value is present there).
-  whatToBring: "Enough for 25–30 meals: sliced bread (wheat preferred), pre-packaged deli meat, sliced cheese, yellow mustard, easy-peel tangerines, a large bag of chips, and zip-top sandwich bags. The first 30 minutes are arrival time; packing starts after that. Full details on each event's Eventbrite page.",
+  // Short line shown in each event's details. The Settings tab key what_to_bring overrides it.
+  whatToBring: "Bring enough for 25–30 meals: sliced bread, deli meat, sliced cheese, yellow mustard, tangerines, a large bag of chips, and zip-top bags. Full list on Eventbrite.",
+
+  // Where a "Coming soon" city sends people. Settings tab key notify_url overrides it.
   notifyUrl: "https://www.tangocharities.org/country",
-  hostUrl: "https://www.tangocharities.org/start",
-
-  // Basemap style for the real map (MapLibre GL + OpenFreeMap, no API key, no usage cap).
-  // Alternatives: https://tiles.openfreemap.org/styles/positron (muted grey) or /styles/bright.
-  mapStyle: "https://tiles.openfreemap.org/styles/liberty",
 
   // Where the page sends people after the event is over.
   monthlyFinderUrl: "https://www.tangocharities.org/feed-the-city",
@@ -35,6 +38,6 @@ window.FTC_COUNTRY_CONFIG = {
   // Eventbrite attribution code added to every Register link so reports stay complete.
   affCode: "oddtdtcreator",
 
-  // How often the page silently re-reads the Sheet while open (ms).
+  // How often the page silently re-reads its data while open (ms).
   refreshMs: 10 * 60 * 1000
 };

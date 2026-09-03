@@ -1,6 +1,10 @@
 [build]
   publish = "."
 
+[functions]
+  directory = "netlify/functions"
+
+# Let Wix and tangocharities.org frame this page, nobody else.
 [[headers]]
   for = "/*"
   [headers.values]
@@ -8,6 +12,7 @@
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
 
+# Never let a stale copy of the app linger in a browser or on the CDN edge.
 [[headers]]
   for = "/index.html"
   [headers.values]
@@ -22,3 +27,8 @@
   for = "/*.css"
   [headers.values]
     Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/seed/*"
+  [headers.values]
+    Cache-Control = "public, max-age=300"

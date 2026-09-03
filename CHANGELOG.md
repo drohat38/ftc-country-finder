@@ -2,6 +2,10 @@
 
 Every user-visible change, newest first. Written so Nick can read it.
 
+## 2026-09-03
+- **Rebuilt on the monthly map's design and on the Eventbrite API.** Deven pointed at the monthly Feed The City event map as the standard: the finder is now that same app (Google Maps, orange brand bar, search + list panel, mobile bottom sheet, filters) adapted for Feed The Country. Events come straight from Eventbrite through a new Netlify Function at /api/events; the Eventbrite token lives only in a Netlify environment variable. The Google Sheet is now an optional overrides layer; the seed CSV is the last resort. Draft Eventbrite events show as Coming soon; live ones show Register with signed-up and spots-left counts. Removed the drawn SVG map, the MapLibre version, the ZIP/city lookup tables, and the separate styles/app files.
+- **Needs from Deven before the map renders:** add https://ftc-country-finder.netlify.app/* to the Google Maps key's referrers (or create a new key), and add EVENTBRITE_TOKEN to Netlify. Everything else works without them.
+
 ## 2026-09-02
 - **Real map.** Replaced the drawn US outline with a real street map (MapLibre with OpenFreeMap tiles, no API key). Orange bubbles show how many events are grouped; tapping one zooms in until each city is its own dot; tapping a dot opens a popup with venue, time, Register and Directions, and highlights that city in the list. Searching moves the map to the place you typed.
 - **Store-locator layout.** Map on the left, search and a scrolling list of white cards on the right (stacked on phones). The heading is now just "Find Your Event" in the page's own blue with one sentence under it, no duplicate counters, so it sits naturally under the hero and above the page's existing stats section. About 1,150 px tall on desktop, 1,350 on phones.

@@ -33,3 +33,11 @@ Static, dependency-light page that lists every Feed The Country event (Saturday,
 - If WebGL or the CDN is unavailable the map area shows a note and the list still works.
 - Design rules from Deven (2026-09-02): it must look like a real product and like the Wix page's own light sections; white cards, dark/blue text on light backgrounds; no big duplicate title or stats above the map (the hero and the stats section already exist on the Wix page); no chapter/one-day labels for volunteers; the embed must stay short on phones; a real map, not a drawn one.
 - After the event date in config.js, the hero switches to the thank-you state automatically.
+
+## Google Maps key
+
+`config.js` carries the same key the live monthly map uses (referrer-restricted). This site's origin must be in the key's allowed referrers in Google Cloud Console, or the map shows the "Map key needs this site" card while the list keeps working. `?k=KEY` on the URL overrides the config key. The repo's older FALLBACK key (AIzaSyAkJ0…) has no billing and does not work.
+
+## Testing locally
+
+`python3 -m http.server 8080` from the repo root. `/api/events` does not exist locally (Netlify Function), so the page falls back to the Sheet/seed; that is expected. The map only renders if `localhost:8080` is in the key's referrers.

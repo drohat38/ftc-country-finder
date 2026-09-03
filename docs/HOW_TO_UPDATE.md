@@ -1,5 +1,12 @@
 # How To Update Feed The Country Events
 
+**Day to day, everything happens on Eventbrite.** Create, edit, publish, or cancel the Eventbrite event and the finder follows within about 5 minutes. Titles must start with "Feed The Country" plus the city, e.g. `Feed The Country Tulsa: A Nationwide Day of Volunteering`. Drafts show as Coming soon; published events show Register.
+
+The Google Sheet below is **optional**. Use it only to add a Host name to a card, hide a city that Eventbrite still lists, or list a city that has no Eventbrite event yet. It has to be shared as "Anyone with the link: Viewer" for the finder to read it.
+
+---
+
+
 Use this Google Sheet:
 
 https://docs.google.com/spreadsheets/d/18plECfE3DnjTu_31KXJABJA-I7uTCNqrCv8Ndf8OsT4/edit
