@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Feed The Country Event Finder | Tango Charities</title>
+<meta name="description" content="Find your Feed The Country event on Saturday, September 19, 2026 and register on Eventbrite.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Poppins:wght@600;700&family=Barlow:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="styles.css?v=1">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+</head>
+<body>
+<main class="finder" id="finder">
+
+  <header class="hero">
+    <div class="hero-inner">
+      <img class="hero-logo" src="assets/tc-white.png" alt="Tango Charities" width="120" height="45">
+      <p class="eyebrow" id="hero-eyebrow">Saturday, September 19, 2026</p>
+      <h2 class="hero-title" id="hero-title">Find your city. Pack meals. Feed families.</h2>
+      <p class="hero-sub" id="hero-sub">Every Feed The Country event happens the same morning. Pick your city below, register on Eventbrite, and bring the items listed on the event page.</p>
+      <ul class="stats" id="stats" aria-live="polite">
+        <li><b id="stat-cities">–</b><span>cities</span></li>
+        <li><b id="stat-states">–</b><span>states</span></li>
+        <li><b id="stat-days">–</b><span id="stat-days-label">days to go</span></li>
+      </ul>
+    </div>
+  </header>
+
+  <section class="map-section" aria-label="Map of Feed The Country cities">
+    <div class="map-head">
+      <p class="section-label">Where we're packing</p>
+      <p class="map-hint" id="map-hint">Tap a state to see its cities.</p>
+      <button class="link-btn hidden" id="map-reset" type="button">Show all states</button>
+    </div>
+    <div class="map-wrap" id="map-wrap">
+      <!-- SVG is built by app.js from us-states.js -->
+    </div>
+    <ul class="legend" aria-label="Legend">
+      <li><i class="dot dot-live"></i>Registration open</li>
+      <li><i class="dot dot-soon"></i>Coming soon</li>
+      <li><i class="swatch swatch-has"></i>State with events</li>
+    </ul>
+  </section>
+
+  <section class="controls" aria-label="Search and filter">
+    <label class="search">
+      <span class="visually-hidden">Search by city, state, venue, or ZIP</span>
+      <input id="q" type="search" placeholder="Search city, state, venue, or ZIP" autocomplete="off" spellcheck="false">
+    </label>
+    <div class="chips" role="group" aria-label="Filter events">
+      <button class="chip" type="button" data-filter="all" aria-pressed="true">All</button>
+      <button class="chip" type="button" data-filter="chapter" aria-pressed="false">Monthly chapters</button>
+      <button class="chip" type="button" data-filter="oneday" aria-pressed="false">One-day hosts</button>
+      <button class="chip" type="button" data-filter="soon" aria-pressed="false">Coming soon</button>
+    </div>
+    <p class="count" id="count" aria-live="polite">Loading events…</p>
+  </section>
+
+  <div class="banner hidden" id="banner" role="status"></div>
+
+  <section class="list" id="list" aria-label="Events by state">
+    <div class="skeleton-group">
+      <div class="skeleton skeleton-label"></div>
+      <div class="skeleton-cards"><div class="skeleton skeleton-card"></div><div class="skeleton skeleton-card"></div><div class="skeleton skeleton-card"></div></div>
+    </div>
+    <div class="skeleton-group">
+      <div class="skeleton skeleton-label"></div>
+      <div class="skeleton-cards"><div class="skeleton skeleton-card"></div><div class="skeleton skeleton-card"></div></div>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <p id="updated">Powered by Tango Charities</p>
+    <a class="hidden" id="fullscreen-link" href="./" target="_blank" rel="noopener">Open full page</a>
+  </footer>
+
+</main>
+
+<script src="config.js?v=1"></script>
+<script src="us-states.js?v=1"></script>
+<script src="app.js?v=1"></script>
+</body>
+</html>
