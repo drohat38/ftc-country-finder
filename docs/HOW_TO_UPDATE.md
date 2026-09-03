@@ -6,6 +6,8 @@ https://docs.google.com/spreadsheets/d/18plECfE3DnjTu_31KXJABJA-I7uTCNqrCv8Ndf8O
 
 Every row is one city. The page reads the Sheet, so you never edit Wix for event changes. Changes show up on the page within about 10 minutes, or right away if you refresh it.
 
+The first tab, **Start Here**, shows live counts (how many cities are Live, Coming soon, Hidden) and the short version of these instructions. The **Events** tab is the one you edit. Rows are colored by Status: blue = Live, gold = Coming soon, grey = Hidden, red = Missing info. Use the filter arrows in the header row to see one state at a time.
+
 ## To change an existing event
 
 1. Find the city's row.
@@ -13,7 +15,7 @@ Every row is one city. The page reads the Sheet, so you never edit Wix for event
 3. Look at the `Status` column. It updates itself:
    - `Live` — has an Eventbrite link. Shows with a Register button.
    - `Coming soon` — no Eventbrite link yet. Shows with a Notify me button.
-   - `Hidden` — Paused is Yes. Not shown.
+   - `Hidden` — the Paused box is ticked. Not shown.
    - `Missing info` — needs a City and a two-letter State.
 4. Refresh the page.
 
@@ -31,7 +33,11 @@ Tip: if the city name needs a neighborhood, write it like `Dallas (North)` or `A
 
 ## To hide a city
 
-Set `Paused` to **Yes**. The row stays in the Sheet, the city disappears from the page. Set it back to **No** to bring it back.
+Tick the **Paused** box. The row stays in the Sheet, the city disappears from the page. Untick it to bring it back.
+
+## To keep it tidy
+
+**Feed The Country Tools → Organize sheet** sorts every row by state and city and refreshes the colors. Run it whenever the list looks jumbled after adding rows.
 
 ## To turn "Coming soon" into "Register"
 
@@ -43,12 +49,13 @@ These columns are hidden and filled in by the tools: Latitude, Longitude, Eventb
 
 ## Menu reference (Feed The Country Tools)
 
+- **Organize sheet** — sort by state and city, refresh statuses and colors.
 - **Refresh statuses** — recompute every Status. Use if something looks off.
 - **Fill coordinates for selected rows** — re-place the map dot from the Address.
 - **Fill all missing coordinates** — place any row that has no dot.
 - **Normalize Eventbrite links** — tidy every link at once.
 - **Eventbrite sync** — see EVENTBRITE_SYNC.md.
-- **Setup & repair** — one-time setup, and repair if a header gets deleted by accident.
+- **Setup & repair** — one-time setup, rebuild the Start Here tab, and repair if a header gets deleted by accident.
 
 ## Quick test
 

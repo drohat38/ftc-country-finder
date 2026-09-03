@@ -30,11 +30,12 @@ Title convention that makes matching work: **"Feed The Country {City}: …"**, f
 
 An Eventbrite private token has the same power as the account that created it: it can read and change every event, order, and attendee list in that account. That is why:
 
-- The token is stored only in the script's own properties, which only the Sheet owner (and people they add as editors of the script) can open. It is never written to a cell, never sent to the finder page, and never in the code repository.
+- The token is stored in the **User Properties of the Google account that saved it** (Deven's). Google keeps User Properties per person, so other editors of the Sheet cannot read it, not even from the script editor. It is never written to a cell, never sent to the finder page, never logged, never put in an error message, and never in the code repository.
+- Because it is tied to one account, only that account can run "Sync now" or turn on the hourly sync. The hourly sync runs as that account on its own, so Nick does not need the token for the sync to keep working. If Nick clicks "Sync now" he gets a friendly "no token saved for your account" message.
 - The sync only sends read requests. There is no code path that writes to Eventbrite.
 - You can revoke it any time from the same API Keys page. The finder keeps working from the Sheet. Use **Eventbrite sync → Forget Eventbrite token** to also turn off the hourly job.
 - Eventbrite's rate limit is 1,000 calls per hour per token. The sync uses one to three calls per run.
-- If you ever add someone as an editor of the script, they can read the token. Keep script editors to Deven and Nick.
+- The remaining risk is the Google account that holds it. Keep two-step verification on that account.
 
 If you would rather not use a token at all, skip this document. Nick pastes Eventbrite links into the Sheet by hand and everything else still works.
 

@@ -22,10 +22,10 @@ Cities with no Eventbrite link yet show as "Coming soon" with a Notify me button
 ## One-time setup (about 10 minutes)
 
 1. **Share the Sheet so the page can read it.** Open the Sheet → Share → General access → "Anyone with the link" → Viewer → Done. The page reads the Sheet through this link. Without it the page shows the saved copy from September 2.
-2. **Turn on the tools menu.** Reload the Sheet. A menu called **Feed The Country Tools** appears next to Help. Click **Setup & repair → Setup / repair sheet**. Google will ask you to authorize the script the first time: Continue → choose your account → Advanced → "Go to Feed The Country Tools (unsafe)" → Allow. Then run Setup once more. This renames the tab to `Events`, adds the dropdowns, colors the header navy, and hides the technical columns.
+2. **Turn on the tools menu.** Reload the Sheet. A menu called **Feed The Country Tools** appears next to Help. Click **Setup & repair → Setup / repair sheet**. Google will ask you to authorize the script the first time: Continue → choose your account → Advanced → "Go to Feed The Country Tools (unsafe)" → Allow. Then run Setup once more. This renames the tab to `Events`, puts the columns in a sensible order, adds the dropdowns and the Paused checkbox, colors every row by Status, hides the technical columns, and builds a **Start Here** tab with live counts and short instructions.
 3. **Turn on auto-updates.** Feed The Country Tools → Setup & repair → Install auto-update trigger. From now on, editing a row updates its Status and Last Updated by itself, and pasting an Eventbrite link tidies it.
 4. **Embed in Wix.** Follow `WIX_EMBED.md`.
-5. **Optional: Eventbrite sync.** Follow `EVENTBRITE_SYNC.md` if you want Eventbrite to fill the Sheet for you.
+5. **Optional: Eventbrite sync.** Follow `EVENTBRITE_SYNC.md` if you want Eventbrite to fill the Sheet for you. The token is stored in Deven's Google account only; other Sheet editors cannot read it.
 
 ## Day to day
 

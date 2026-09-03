@@ -6,8 +6,10 @@
  * Latitude, Longitude, EventbriteID and LastSynced. New events get a new row. Nothing is ever deleted,
  * and the columns a person owns (Host, HostType, Paused, Notes) are never touched.
  *
- * The private token lives only in Script Properties (File > Project properties). It never goes in a
- * cell, in the finder page, or in the repo. The sync only ever sends GET requests.
+ * The private token lives only in the User Properties of the Google account that saved it. Other
+ * editors of this Sheet cannot read it, even from the script editor. It never goes in a cell, in the
+ * finder page, or in the repo. The sync only ever sends GET requests. The hourly trigger runs as the
+ * account that installed it, so that account must be the one that saved the token.
  */
 
 var EB = {
@@ -23,32 +25,36 @@ var EB = {
 function setEventbriteToken() {
   var ui = SpreadsheetApp.getUi();
   var res = ui.prompt('Eventbrite private token',
-    'Paste the Private token from Eventbrite > Account Settings > Developer Links > API Keys.\n' +
-    'It is stored only in this script\'s properties and used for read-only requests.', ui.ButtonSet.OK_CANCEL);
+    'Paste the Private token from Eventbrite > Account Settings > Developer Links > API Keys.\n\n' +
+    'It is stored only in YOUR Google account\'s settings for this script. Other people who edit this Sheet cannot read it. ' +
+    'It is used for read-only requests.', ui.ButtonSet.OK_CANCEL);
   if (res.getSelectedButton() !== ui.Button.OK) return;
   var token = String(res.getResponseText() || '').trim();
   if (token.length < 10) { ui.alert('That does not look like a token. Nothing was saved.'); return; }
-  var props = PropertiesService.getScriptProperties();
+  var props = props_();
   props.setProperty(EB.PROP_TOKEN, token);
   props.deleteProperty(EB.PROP_ORG);
   try {
     var org = getOrgId_();
-    ui.alert('Token saved. Connected to Eventbrite organization ' + org.name + ' (id ' + org.id + ').\n\nNext: Eventbrite sync > Preview sync (no changes).');
+    ui.alert('Token saved to your account. Connected to Eventbrite organization ' + org.name + ' (id ' + org.id + ').\n\n' +
+      'Only you can run the sync or turn on the hourly sync. Next: Eventbrite sync > Preview sync (no changes).');
   } catch (err) {
     props.deleteProperty(EB.PROP_TOKEN);
     ui.alert('Eventbrite rejected that token, so it was not kept.\n\n' + err.message);
   }
 }
 function clearEventbriteToken() {
-  var props = PropertiesService.getScriptProperties();
+  var props = props_();
   props.deleteProperty(EB.PROP_TOKEN);
   props.deleteProperty(EB.PROP_ORG);
   removeHourlySync();
-  toast_('Eventbrite token removed and hourly sync turned off. The finder keeps working from the Sheet.');
+  toast_('Eventbrite token removed from your account and hourly sync turned off. The finder keeps working from the Sheet.');
 }
+// User Properties: private to the Google account running the script. Script Properties would be readable by every Sheet editor.
+function props_() { return PropertiesService.getUserProperties(); }
 function token_() {
-  var t = PropertiesService.getScriptProperties().getProperty(EB.PROP_TOKEN);
-  if (!t) throw new Error('No Eventbrite token saved. Use Feed The Country Tools > Eventbrite sync > Set Eventbrite token.');
+  var t = props_().getProperty(EB.PROP_TOKEN);
+  if (!t) throw new Error('No Eventbrite token is saved for your Google account. The person who set it up runs the sync, or the hourly sync runs on its own. To use your own token: Feed The Country Tools > Eventbrite sync > Set Eventbrite token.');
   return t;
 }
 
@@ -65,7 +71,7 @@ function ebGet_(path, params) {
   return JSON.parse(body);
 }
 function getOrgId_() {
-  var props = PropertiesService.getScriptProperties();
+  var props = props_();
   var cached = props.getProperty(EB.PROP_ORG);
   if (cached) { var parts = cached.split('|'); return { id: parts[0], name: parts.slice(1).join('|') }; }
   var data = ebGet_('/users/me/organizations/', {});
@@ -189,15 +195,15 @@ function runSync_(dryRun) {
         added.push(e.City + ', ' + e.State);
         if (dryRun) return;
         var newRow = sh.getLastRow() + 1;
-        var vals = {};
-        CONFIG.HEADERS.forEach(function (h) { vals[h] = ''; });
-        vals.City = e.City; vals.State = e.State; vals.Venue = e.Venue; vals.Address = e.Address; vals.Time = e.Time;
-        vals.HostType = 'One-day host'; vals.EventbriteURL = e.EventbriteURL; vals.Paused = 'No';
-        vals.Latitude = e.Latitude; vals.Longitude = e.Longitude; vals.EventbriteID = e.EventbriteID;
-        vals.LastSynced = now; vals.Notes = 'Added by Eventbrite sync ' + now.toDateString();
-        vals.EventID = Utilities.getUuid(); vals.FirstAdded = now; vals['Last Updated'] = now;
-        var rowVals = CONFIG.HEADERS.map(function (h) { return vals[h]; });
-        sh.getRange(newRow, 1, 1, CONFIG.HEADERS.length).setValues([rowVals]);
+        var vals = {
+          City: e.City, State: e.State, Venue: e.Venue, Address: e.Address, Time: e.Time,
+          HostType: 'One-day host', EventbriteURL: e.EventbriteURL, Paused: 'No',
+          Latitude: e.Latitude, Longitude: e.Longitude, EventbriteID: e.EventbriteID,
+          LastSynced: now, Notes: 'Added by Eventbrite sync ' + now.toDateString(),
+          EventID: Utilities.getUuid(), FirstAdded: now, 'Last Updated': now
+        };
+        // Write by header name, so the sheet's column order can change without breaking the sync.
+        Object.keys(vals).forEach(function (h) { setCell_(sh, newRow, map, h, vals[h]); });
         updateRowStatus_(sh, map, newRow);
       }
     });
@@ -243,7 +249,7 @@ function installHourlySync() {
   token_();
   var exists = ScriptApp.getProjectTriggers().some(function (t) { return t.getHandlerFunction() === 'syncFromEventbrite'; });
   if (!exists) ScriptApp.newTrigger('syncFromEventbrite').timeBased().everyHours(1).create();
-  toast_(exists ? 'Hourly sync was already on.' : 'Hourly sync is on. Eventbrite changes reach the Sheet within an hour.');
+  toast_(exists ? 'Hourly sync was already on.' : 'Hourly sync is on. It runs as your account, using your saved token. Eventbrite changes reach the Sheet within an hour.');
 }
 function removeHourlySync() {
   var n = 0;

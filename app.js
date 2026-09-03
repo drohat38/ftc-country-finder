@@ -46,7 +46,8 @@
   function normalize(raw) {
     var get = function (k) { return String(raw[k] === undefined || raw[k] === null ? "" : raw[k]).trim(); };
     var status = get("Status").toLowerCase();
-    var paused = get("Paused").toLowerCase() === "yes" || status === "hidden";
+    var pausedRaw = get("Paused").toLowerCase();
+    var paused = pausedRaw === "yes" || pausedRaw === "true" || status === "hidden";
     var url = safeUrl(get("EventbriteURL"));
     var city = get("City"), st = get("State").toUpperCase();
     if (!city || !st) return null;
