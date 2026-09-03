@@ -510,11 +510,16 @@ document.addEventListener("submit",e=>{
   const ev=all.find(x=>x.id===f.dataset.id);const inp=f.querySelector("input[type=email]"),msg=f.querySelector(".nform-msg"),btn=f.querySelector("button");
   const email=(inp.value||"").trim();
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){msg.textContent="Please enter a valid email.";msg.className="nform-msg err";inp.focus();return}
+  msg.textContent="";msg.className="nform-msg";
   btn.disabled=true;btn.textContent="Saving…";
   const payload={email,city:ev?ev.city:"",state:ev?ev.state:"",source:location.hostname,website:f.querySelector(".nform-hp").value||""};
-  fetch(CFG.notifyPostUrl,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain"},body:JSON.stringify(payload)})
-    .then(()=>{f.innerHTML=`<div class="nform-done">You're on the list. We'll email you when ${esc(ev?baseCity(ev.city)||ev.city:"it")} opens.</div>`})
-    .catch(()=>{btn.disabled=false;btn.textContent="Notify me";msg.textContent="That didn't go through. Please try again.";msg.className="nform-msg err"});
+  let settled=false;
+  const done=()=>{if(settled)return;settled=true;f.innerHTML=`<div class="nform-done">You're on the list. We'll email you when ${esc(ev?baseCity(ev.city)||ev.city:"it")} opens.</div>`};
+  // The script answers through a redirect the browser can't read in no-cors mode, so treat a sent request as saved.
+  const t=setTimeout(done,3500);
+  fetch(CFG.notifyPostUrl,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain"},body:JSON.stringify(payload),keepalive:true})
+    .then(()=>{clearTimeout(t);done()})
+    .catch(()=>{clearTimeout(t);if(settled)return;settled=true;btn.disabled=false;btn.textContent="Notify me";msg.textContent="That didn't go through. Please try again.";msg.className="nform-msg err"});
 });
 function mkIW(ev){
   const bring=setting("what_to_bring",CFG.whatToBring||"");
