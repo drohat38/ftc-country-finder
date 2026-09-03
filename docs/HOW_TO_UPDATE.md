@@ -11,7 +11,7 @@ Use this Google Sheet:
 
 https://docs.google.com/spreadsheets/d/18plECfE3DnjTu_31KXJABJA-I7uTCNqrCv8Ndf8OsT4/edit
 
-Every row is one city. The page reads the Sheet, so you never edit Wix for event changes. Changes show up on the page within about 10 minutes, or right away if you refresh it.
+Every row is one city. Rows are matched to Eventbrite events by city and state; a Sheet row adds a Host name or hides a city, and a city with no Eventbrite event shows as Coming soon.
 
 The first tab, **Start Here**, shows live counts (how many cities are Live, Coming soon, Hidden) and the short version of these instructions. The **Events** tab is the one you edit. Rows are colored by Status: blue = Live, gold = Coming soon, grey = Hidden, red = Missing info. Use the filter arrows in the header row to see one state at a time.
 
@@ -54,14 +54,13 @@ Paste the Eventbrite link into `EventbriteURL`. The link tidies itself (https, a
 
 The **Settings** tab has a few Key / Value rows. Edit the Value column only:
 
-- `what_to_bring` — the one-line shopping list shown above the city list.
+- `what_to_bring` — the one-line shopping list shown in each event's details card.
 - `notify_url` — where the "Notify me" button on a Coming soon city goes (a Google Form link works).
-- `host_url` — shown when someone searches a place with nothing nearby ("Bring Feed The City to your town").
-- `hero_note` and `thank_you_note` — optional replacements for the sentence under the big title, before and after September 19.
+- `notify_url` is the only other one the finder reads today.
 
 ## Registered and Capacity
 
-If the Eventbrite sync is on, `Registered` (tickets sold) and `Capacity` fill in by themselves every hour. The finder then shows "12 spots left" on the card, "45 volunteers signed up" under it, and a nationwide "Volunteers signed up" counter at the top. You can also type these by hand.
+The finder gets these straight from Eventbrite (tickets sold and capacity) and shows "45 signed up · 12 spots left" on the card. The Sheet columns are only used when Eventbrite is unreachable.
 
 ## What not to edit
 
