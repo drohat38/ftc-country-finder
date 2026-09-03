@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Poppins:wght@600;700&family=Nunito+Sans:wght@300;400;700;800&display=swap">
-<link rel="stylesheet" href="styles.css?v=3">
+<link rel="stylesheet" href="styles.css?v=5">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 </head>
 <body>
@@ -17,49 +17,72 @@
   <header class="intro">
     <p class="kicker" id="hero-eyebrow">Saturday, September 19, 2026</p>
     <h2 class="title" id="hero-title">Find Your Feed The Country Event</h2>
-    <p class="lede" id="hero-sub">Click your city to register on Eventbrite, then bring the items listed on the event page. All ages are welcome.</p>
+    <p class="lede" id="hero-sub">One morning. One mission. Pick your city, register on Eventbrite, and bring supplies for 25–30 meals. All ages are welcome.</p>
     <ul class="stats" id="stats" aria-live="polite">
       <li><b id="stat-cities">–</b><span>Cities</span></li>
       <li><b id="stat-states">–</b><span>States</span></li>
+      <li class="hidden" id="stat-vol-wrap"><b id="stat-vol">–</b><span>Volunteers signed up</span></li>
       <li><b id="stat-days">–</b><span id="stat-days-label">Days to go</span></li>
     </ul>
   </header>
 
   <section class="map-section" aria-label="Map of Feed The Country cities">
-    <div class="map-wrap" id="map-wrap">
-      <!-- SVG is built by app.js from us-states.js -->
+    <div class="map-grid" id="map-grid">
+      <div class="map-main">
+        <div class="map-wrap" id="map-wrap"></div>
+        <div class="map-tip hidden" id="map-tip" role="tooltip"></div>
+        <p class="map-hint" id="map-hint">Each bubble is a group of nearby events. Click a bubble or a state to see its cities.</p>
+      </div>
+      <aside class="map-inset hidden" id="map-inset" aria-label="Zoomed view of the busiest area">
+        <p class="inset-title"><span id="inset-name">Busiest area</span><small id="inset-count"></small></p>
+        <div class="inset-wrap" id="inset-wrap"></div>
+        <p class="inset-note">Zoomed in so every event has its own dot.</p>
+      </aside>
     </div>
     <div class="map-foot">
       <ul class="legend" aria-label="Legend">
         <li><i class="dot dot-live"></i>Registration open</li>
         <li><i class="dot dot-soon"></i>Coming soon</li>
+        <li><i class="bubble-key">7</i>Nearby events grouped</li>
         <li><i class="swatch swatch-has"></i>State with events</li>
       </ul>
-      <p class="map-hint" id="map-hint">Click a state to see its cities.</p>
-      <button class="link-btn hidden" id="map-reset" type="button">Show all states</button>
+      <button class="link-btn hidden" id="map-reset" type="button">Show all events</button>
     </div>
+  </section>
+
+  <section class="bring" id="bring" aria-label="What to bring">
+    <p class="bring-label">What every volunteer brings</p>
+    <p class="bring-text" id="bring-text">Supplies for 25–30 meals. The full list is on each event's Eventbrite page.</p>
   </section>
 
   <section class="controls" aria-label="Search and filter">
     <h3 class="click-line">Click on the city below to register!</h3>
-    <div class="controls-row">
+    <form class="controls-row" id="search-form" autocomplete="off">
       <label class="search">
-        <span class="visually-hidden">Search by city, state, venue, or ZIP</span>
-        <input id="q" type="search" placeholder="Search city, state, venue, or ZIP" autocomplete="off" spellcheck="false">
+        <span class="visually-hidden">Search by ZIP code, city, or state</span>
+        <input id="q" type="search" placeholder="ZIP code, city, or state" autocomplete="off" spellcheck="false" enterkeyhint="search">
       </label>
-      <div class="chips" role="group" aria-label="Filter events">
-        <button class="chip" type="button" data-filter="all" aria-pressed="true">All</button>
-        <button class="chip" type="button" data-filter="chapter" aria-pressed="false">Monthly chapters</button>
-        <button class="chip" type="button" data-filter="oneday" aria-pressed="false">One-day hosts</button>
-        <button class="chip" type="button" data-filter="soon" aria-pressed="false">Coming soon</button>
-      </div>
+      <button class="btn btn-search" type="submit">Search</button>
+      <button class="btn btn-ghost btn-near" type="button" id="near-me">Near me</button>
+    </form>
+    <div class="chips" role="group" aria-label="Filter events">
+      <button class="chip" type="button" data-filter="all" aria-pressed="true">All</button>
+      <button class="chip" type="button" data-filter="chapter" aria-pressed="false">Monthly chapters</button>
+      <button class="chip" type="button" data-filter="oneday" aria-pressed="false">One-day hosts</button>
+      <button class="chip" type="button" data-filter="soon" aria-pressed="false">Coming soon</button>
     </div>
     <p class="count" id="count" aria-live="polite">Loading events…</p>
   </section>
 
   <div class="banner hidden" id="banner" role="status"></div>
 
-  <section class="list" id="list" aria-label="Events by state">
+  <div class="result-head hidden" id="result-head">
+    <p class="result-title" id="result-title"></p>
+    <p class="result-sub" id="result-sub"></p>
+    <button class="link-btn" id="result-reset" type="button">Show all events</button>
+  </div>
+
+  <section class="list" id="list" aria-label="Events">
     <div class="skeleton-group">
       <div class="skeleton skeleton-label"></div>
       <div class="skeleton-cards"><div class="skeleton skeleton-card"></div><div class="skeleton skeleton-card"></div><div class="skeleton skeleton-card"></div></div>
@@ -72,13 +95,16 @@
 
   <footer class="foot">
     <p id="updated">Powered by Tango Charities</p>
+    <p class="credit">Map: US Census Bureau · City search: GeoNames (CC BY 4.0)</p>
     <a class="hidden" id="fullscreen-link" href="./" target="_blank" rel="noopener">Open full page</a>
   </footer>
 
 </main>
 
-<script src="config.js?v=3"></script>
-<script src="us-states.js?v=3"></script>
-<script src="app.js?v=3"></script>
+<script src="config.js?v=5"></script>
+<script src="us-states.js?v=5"></script>
+<script src="us-zip3.js?v=5"></script>
+<script src="us-cities.js?v=5"></script>
+<script src="app.js?v=5"></script>
 </body>
 </html>

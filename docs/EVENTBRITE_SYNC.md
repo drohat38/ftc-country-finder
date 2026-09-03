@@ -9,7 +9,7 @@ Every hour (or when you click **Sync now**), the script:
 1. Asks Eventbrite for the Tango Charities organization's live, upcoming events.
 2. Keeps only events whose title starts with **"Feed The Country"** (any capitalization). Everything else, including monthly Feed The City events, is ignored.
 3. For each one, finds the Sheet row by Eventbrite ID, then by Eventbrite link, then by city and state.
-4. Fills **Venue, Address, Time, EventbriteURL, Latitude, Longitude, EventbriteID, LastSynced**. It never touches Host, HostType, Paused, or Notes, and it never deletes a row.
+4. Fills **Venue, Address, Time, EventbriteURL, Latitude, Longitude, EventbriteID, LastSynced**, plus **Registered** (tickets sold) and **Capacity** so the finder can show spots left and a nationwide volunteer count. It never touches Host, HostType, Paused, or Notes, and it never deletes a row.
 5. Adds a new row for any Feed The Country event that has no row yet (as a One-day host; change HostType if it is a chapter).
 6. Writes a **Sync Report** tab: how many found, updated, added, and any it could not match.
 

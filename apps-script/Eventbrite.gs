@@ -85,7 +85,7 @@ function fetchCountryEvents_() {
   var org = getOrgId_();
   var events = [], continuation = null, guard = 0;
   do {
-    var params = { status: 'live', time_filter: 'current_future', order_by: 'start_asc', expand: 'venue', page_size: EB.PAGE_SIZE };
+    var params = { status: 'live', time_filter: 'current_future', order_by: 'start_asc', expand: 'venue,ticket_classes', page_size: EB.PAGE_SIZE };
     if (continuation) params.continuation = continuation;
     var data = ebGet_('/organizations/' + org.id + '/events/', params);
     (data.events || []).forEach(function (ev) {
@@ -118,7 +118,18 @@ function eventToRow_(ev) {
   var venue = ev.venue || {};
   var addr = venue.address || {};
   var start = fmtTime_(ev.start && ev.start.local), end = fmtTime_(ev.end && ev.end.local);
+  // Registered = tickets sold across visible ticket classes; Capacity = their total (or the event capacity).
+  var sold = 0, total = 0, sawClasses = false;
+  (ev.ticket_classes || []).forEach(function (tc) {
+    if (tc.hidden || tc.deleted) return;
+    sawClasses = true;
+    sold += parseInt(tc.quantity_sold, 10) || 0;
+    total += parseInt(tc.quantity_total, 10) || 0;
+  });
+  if (!total && ev.capacity) total = parseInt(ev.capacity, 10) || 0;
   return {
+    Registered: sawClasses ? sold : '',
+    Capacity: total || '',
     City: parseCityFromTitle_(ev.name && ev.name.text),
     State: str_(addr.region).toUpperCase(),
     Venue: str_(venue.name),
@@ -176,7 +187,7 @@ function runSync_(dryRun) {
       if (row) {
         var cur = rowObj_(sh, map, row);
         var changes = [];
-        ['Venue', 'Address', 'Time', 'EventbriteURL', 'EventbriteID'].forEach(function (h) {
+        ['Venue', 'Address', 'Time', 'EventbriteURL', 'EventbriteID', 'Registered', 'Capacity'].forEach(function (h) {
           if (e[h] !== '' && str_(cur[h]) !== str_(e[h])) changes.push(h);
         });
         var latDiff = e.Latitude !== '' && Math.abs(parseFloat(cur.Latitude) - e.Latitude) > 0.0005;
@@ -185,7 +196,7 @@ function runSync_(dryRun) {
         if (!changes.length) { unchanged.push(e.City + ', ' + e.State); return; }
         updated.push(e.City + ', ' + e.State + ' (' + changes.join(', ') + ')');
         if (dryRun) return;
-        ['Venue', 'Address', 'Time', 'EventbriteURL', 'EventbriteID'].forEach(function (h) { if (e[h] !== '') setCell_(sh, row, map, h, e[h]); });
+        ['Venue', 'Address', 'Time', 'EventbriteURL', 'EventbriteID', 'Registered', 'Capacity'].forEach(function (h) { if (e[h] !== '') setCell_(sh, row, map, h, e[h]); });
         if (e.Latitude !== '') setCell_(sh, row, map, 'Latitude', e.Latitude);
         if (e.Longitude !== '') setCell_(sh, row, map, 'Longitude', e.Longitude);
         setCell_(sh, row, map, 'LastSynced', now);
@@ -199,6 +210,7 @@ function runSync_(dryRun) {
           City: e.City, State: e.State, Venue: e.Venue, Address: e.Address, Time: e.Time,
           HostType: 'One-day host', EventbriteURL: e.EventbriteURL, Paused: 'No',
           Latitude: e.Latitude, Longitude: e.Longitude, EventbriteID: e.EventbriteID,
+          Registered: e.Registered, Capacity: e.Capacity,
           LastSynced: now, Notes: 'Added by Eventbrite sync ' + now.toDateString(),
           EventID: Utilities.getUuid(), FirstAdded: now, 'Last Updated': now
         };

@@ -43,6 +43,19 @@ Tick the **Paused** box. The row stays in the Sheet, the city disappears from th
 
 Paste the Eventbrite link into `EventbriteURL`. The link tidies itself (https, and the `aff=oddtdtcreator` tracking code so Eventbrite reports stay complete) and the card flips to Register.
 
+## Words and links on the finder (Settings tab)
+
+The **Settings** tab has a few Key / Value rows. Edit the Value column only:
+
+- `what_to_bring` — the one-line shopping list shown above the city list.
+- `notify_url` — where the "Notify me" button on a Coming soon city goes (a Google Form link works).
+- `host_url` — shown when someone searches a place with nothing nearby ("Bring Feed The City to your town").
+- `hero_note` and `thank_you_note` — optional replacements for the sentence under the big title, before and after September 19.
+
+## Registered and Capacity
+
+If the Eventbrite sync is on, `Registered` (tickets sold) and `Capacity` fill in by themselves every hour. The finder then shows "12 spots left" on the card, "45 volunteers signed up" under it, and a nationwide "Volunteers signed up" counter at the top. You can also type these by hand.
+
 ## What not to edit
 
 These columns are hidden and filled in by the tools: Latitude, Longitude, EventbriteID, LastSynced, EventID, FirstAdded, Last Updated. If you ever need to see them: **Feed The Country Tools → Show technical columns**. Hide them again with **Hide technical columns**.

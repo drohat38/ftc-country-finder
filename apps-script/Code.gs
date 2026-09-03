@@ -14,14 +14,22 @@ var CONFIG = {
   SHEET_NAME: 'Events',
   START_SHEET: 'Start Here',
   // Column order Nick sees, left to right. Everything from Latitude onward is hidden.
-  HEADERS: ['City', 'State', 'Venue', 'Address', 'Time', 'Host', 'HostType', 'EventbriteURL', 'Status', 'Paused', 'Notes',
+  HEADERS: ['City', 'State', 'Venue', 'Address', 'Time', 'Host', 'HostType', 'EventbriteURL', 'Status', 'Paused', 'Registered', 'Capacity', 'Notes',
             'Latitude', 'Longitude', 'EventbriteID', 'LastSynced', 'EventID', 'FirstAdded', 'Last Updated'],
   USER_FIELDS: ['City', 'State', 'Venue', 'Address', 'Time', 'Host', 'HostType', 'EventbriteURL', 'Notes'],
   HIDDEN: ['Latitude', 'Longitude', 'EventbriteID', 'LastSynced', 'EventID', 'FirstAdded', 'Last Updated'],
   COMPUTED: ['Status', 'Latitude', 'Longitude', 'EventbriteID', 'LastSynced', 'EventID', 'FirstAdded', 'Last Updated'],
   WIDTHS: { City: 170, State: 62, Venue: 210, Address: 280, Time: 150, Host: 140, HostType: 140, EventbriteURL: 240,
-            Status: 118, Paused: 76, Notes: 320, Latitude: 90, Longitude: 90, EventbriteID: 120, LastSynced: 140,
+            Status: 118, Paused: 76, Registered: 96, Capacity: 90, Notes: 320, Latitude: 90, Longitude: 90, EventbriteID: 120, LastSynced: 140,
             EventID: 120, FirstAdded: 120, 'Last Updated': 140 },
+  SETTINGS_SHEET: 'Settings',
+  SETTINGS: [
+    ['what_to_bring', 'Enough for 25–30 meals: sliced bread (wheat preferred), pre-packaged deli meat, sliced cheese, yellow mustard, easy-peel tangerines, a large bag of chips, and zip-top sandwich bags. The first 30 minutes are arrival time; packing starts after that. Full details on each event\'s Eventbrite page.', 'One line shown above the city list on the finder.'],
+    ['notify_url', 'https://www.tangocharities.org/country', 'Where the "Notify me" button on a Coming soon city goes. Paste a Google Form link here.'],
+    ['host_url', 'https://www.tangocharities.org/start', 'Shown when someone searches a place with nothing nearby: "Bring Feed The City to your town".'],
+    ['hero_note', '', 'Optional. Replaces the sentence under the big title on the finder. Leave blank for the default.'],
+    ['thank_you_note', '', 'Optional. The sentence shown after September 19. Leave blank for the default.']
+  ],
   HOST_TYPES: ['Monthly chapter', 'One-day host'],
   STATUS: { LIVE: 'Live', SOON: 'Coming soon', HIDDEN: 'Hidden', MISSING: 'Missing info' },
   AFF_CODE: 'oddtdtcreator',
@@ -238,6 +246,7 @@ function setupSheet() {
     var map = headerMap_(sh);
     for (var r = 2; r <= sh.getLastRow(); r++) updateRowStatus_(sh, map, r);
     applyFormatting_(sh, map);
+    buildSettings_();
     buildStartHere_();
     SpreadsheetApp.getActiveSpreadsheet().setActiveSheet(sh);
     toast_('Sheet is set up. Next: Feed The Country Tools > Setup & repair > Install auto-update trigger.');
@@ -356,6 +365,36 @@ function applyHidden_(sh, map, hide) {
 function showTechnicalColumns() { var sh = getSheet_(); applyHidden_(sh, headerMap_(sh), false); }
 function hideTechnicalColumns() { var sh = getSheet_(); applyHidden_(sh, headerMap_(sh), true); }
 
+/* ---------------- "Settings" tab (words and links the finder reads) ---------------- */
+function buildSettings_() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sh = ss.getSheetByName(CONFIG.SETTINGS_SHEET);
+  var c = CONFIG.COLORS;
+  if (!sh) {
+    sh = ss.insertSheet(CONFIG.SETTINGS_SHEET);
+    sh.getRange(1, 1, 1, 3).setValues([['Key', 'Value', 'What it does']]);
+  }
+  var existing = {};
+  var last = sh.getLastRow();
+  if (last >= 2) sh.getRange(2, 1, last - 1, 1).getValues().forEach(function (r, i) { if (str_(r[0])) existing[str_(r[0])] = i + 2; });
+  CONFIG.SETTINGS.forEach(function (row) {
+    if (existing[row[0]]) { sh.getRange(existing[row[0]], 3).setValue(row[2]); return; }
+    sh.appendRow(row);
+  });
+  var rows = Math.max(sh.getLastRow(), 2);
+  sh.getRange(1, 1, 1, 3).setBackground(c.header).setFontColor(c.headerText).setFontWeight('bold');
+  sh.setFrozenRows(1);
+  sh.setColumnWidth(1, 150); sh.setColumnWidth(2, 520); sh.setColumnWidth(3, 420);
+  sh.getRange(2, 1, rows - 1, 1).setFontWeight('bold').setFontColor('#4C5A6B');
+  sh.getRange(2, 2, rows - 1, 2).setWrap(true).setVerticalAlignment('top');
+  sh.getRange(2, 3, rows - 1, 1).setFontColor('#4C5A6B').setFontStyle('italic');
+  sh.getProtections(SpreadsheetApp.ProtectionType.RANGE).forEach(function (p) { if (/\[FTC\]/.test(p.getDescription())) p.remove(); });
+  var p = sh.getRange(1, 1, rows, 1).protect();
+  p.setDescription('[FTC] Setting names: edit the Value column, not this one');
+  p.setWarningOnly(true);
+  sh.setTabColor(c.gold);
+}
+
 /* ---------------- "Start Here" tab ---------------- */
 function buildStartHere() { withLock_(function () { buildStartHere_(); toast_('"Start Here" tab rebuilt.'); }); }
 function buildStartHere_() {
@@ -384,6 +423,7 @@ function buildStartHere_() {
     ['Hide a city', 'Tick the Paused box. Untick to bring it back. Rows are never deleted.', '', ''],
     ['Turn "Coming soon" into "Register"', 'Paste the Eventbrite link into EventbriteURL.', '', ''],
     ['Keep it tidy', 'Feed The Country Tools > Organize sheet sorts by state and refreshes the colors.', '', ''],
+    ['Change the words on the finder', 'The Settings tab holds the "what to bring" line, the Notify me link, and the after-event message. Edit the Value column.', '', ''],
     ['', '', '', ''],
     ['Colors on the Events tab', '', '', ''],
     ['Live', 'Has an Eventbrite link. Shows with a Register button.', '', ''],
@@ -405,18 +445,18 @@ function buildStartHere_() {
   sh.setRowHeight(1, 52);
   sh.getRange(2, 1, 1, 4).merge().setFontColor('#4C5A6B').setWrap(true);
   sh.setRowHeight(2, 40);
-  [4, 10, 17, 23].forEach(function (r) {
+  [4, 10, 18, 24].forEach(function (r) {
     sh.getRange(r, 1, 1, 4).merge().setFontColor(c.orange).setFontWeight('bold').setFontSize(13);
   });
   sh.getRange(5, 1, 4, 1).setFontWeight('bold');
   sh.getRange(5, 2, 4, 1).setFontSize(16).setFontWeight('bold').setFontColor(c.header).setHorizontalAlignment('left');
-  sh.getRange(11, 1, 5, 1).setFontWeight('bold');
-  sh.getRange(18, 1, 1, 1).setBackground(c.live).setFontWeight('bold');
-  sh.getRange(19, 1, 1, 1).setBackground(c.soon).setFontWeight('bold');
-  sh.getRange(20, 1, 1, 1).setBackground(c.hidden).setFontColor(c.hiddenText).setFontWeight('bold');
-  sh.getRange(21, 1, 1, 1).setBackground(c.missing).setFontColor(c.missingText).setFontWeight('bold');
-  sh.getRange(24, 1, 3, 1).setFontWeight('bold');
-  sh.getRange(28, 1, 1, 4).merge().setFontColor('#4C5A6B').setFontStyle('italic');
+  sh.getRange(11, 1, 6, 1).setFontWeight('bold');
+  sh.getRange(19, 1, 1, 1).setBackground(c.live).setFontWeight('bold');
+  sh.getRange(20, 1, 1, 1).setBackground(c.soon).setFontWeight('bold');
+  sh.getRange(21, 1, 1, 1).setBackground(c.hidden).setFontColor(c.hiddenText).setFontWeight('bold');
+  sh.getRange(22, 1, 1, 1).setBackground(c.missing).setFontColor(c.missingText).setFontWeight('bold');
+  sh.getRange(25, 1, 3, 1).setFontWeight('bold');
+  sh.getRange(29, 1, 1, 4).merge().setFontColor('#4C5A6B').setFontStyle('italic');
   sh.setHiddenGridlines(true);
   sh.setTabColor(c.header);
   if (sh.getMaxColumns() > 4) sh.deleteColumns(5, sh.getMaxColumns() - 4);

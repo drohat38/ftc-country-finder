@@ -14,8 +14,8 @@ It is styled to look like part of the Feed The Country page: the same navy, the 
    ```
 4. Size it:
    - Width: full content width (about 980 px on desktop). Stretch it to the section edges.
-   - Height: **7,300 px** on desktop (measured with 63 cities at 980 px wide). Do not leave height on "auto", Wix collapses it to a thin strip.
-   - Switch to the **mobile editor** and set the height to **12,800 px**. The list is one column on phones, so it is much taller.
+   - Height: **7,900 px** on desktop (measured with 63 cities at 980 px wide). Do not leave height on "auto", Wix collapses it to a thin strip.
+   - Switch to the **mobile editor** and set the height to **14,800 px**. The list is one column on phones, so it is much taller.
    - If Wix refuses a height that large, tell Deven; the page can collapse big states behind a "Show all" button instead.
    - The page never scrolls inside its own frame, so if Nick later adds many cities and the bottom gets cut off, add height.
 5. Drag the embed so it sits directly under the hero, full width. Give it the same navy background as the section it sits in (the embed's own background is navy #003366, so any seam disappears).
@@ -38,8 +38,8 @@ The hosting sends a `frame-ancestors` rule that allows tangocharities.org and Wi
 
 | Cities in the Sheet | Desktop height | Mobile height |
 |---|---|---|
-| Up to 70 | 7,800 px | 14,000 px |
-| Up to 100 | 10,800 px | 19,500 px |
-| Up to 150 | 15,800 px | 28,500 px |
+| Up to 70 | 8,500 px | 16,000 px |
+| Up to 100 | 11,500 px | 22,500 px |
+| Up to 150 | 16,500 px | 33,000 px |
 
-Rule of thumb: about 100 px per city on desktop and 185 px per city on mobile, plus 1,300 px for the heading, counts, map and search.
+Rule of thumb: about 100 px per city on desktop and 215 px per city on mobile, plus 1,600 px for the heading, counts, map, inset and search.
