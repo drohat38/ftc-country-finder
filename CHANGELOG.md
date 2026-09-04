@@ -3,6 +3,7 @@
 Every user-visible change, newest first. Written so Nick can read it.
 
 ## 2026-09-04
+- **Cloudflare Pages ready.** Netlify's free plan stamps a badge on the page, so the finder moves to Cloudflare Pages like the monthly map: `functions/api/events.js` (same Eventbrite feed, read-only, cached 5 min at the edge) and `_headers` (Wix framing rule). Tested locally with wrangler. Docs point at ftc-country-finder.pages.dev; connecting the repo is a 5-minute click-through in docs/CLOUDFLARE_PAGES.md.
 - **Feed The Country look.** The real Feed The Country lockup in the brand card with a live tally (cities, states, signed up, days to go); a custom map style (navy water, warm land, quiet roads); orange pins for open registration, dashed gold pins for coming soon; count bubbles that group dense areas (Dallas–Fort Worth) and zoom in when tapped; capacity bars on cards; a copy-link button in each pin's window (?city=…); "today" and "after" modes.
 - **Coming soon tab.** Nick lists cities not yet on Eventbrite on a "Coming soon" tab (City, State). The tools geocode them; the finder shows them as gold pins. Eventbrite wins when the event exists.
 - **Notify me: store only.** Removed the per-signup email and the notify_email setting; no address lives in the Sheet.

@@ -1,6 +1,6 @@
 # Putting the finder on the Wix page
 
-The finder lives at **https://ftc-country-finder.netlify.app**. In Wix you embed it by web address, exactly like the monthly Feed The City map. The Wix page never needs to change when events change; those come from Eventbrite.
+The finder lives at **https://ftc-country-finder.pages.dev** (Cloudflare Pages). In Wix you embed it by web address, exactly like the monthly Feed The City map. The Wix page never needs to change when events change; those come from Eventbrite.
 
 It is a full-frame app (map behind, panel in front), the same design as the monthly finder, so it should get the same treatment on the page: a fixed-height embed, not a long section.
 
@@ -13,7 +13,7 @@ Directly under the Feed The Country hero graphic, above "Over 100 Feed The City 
 1. Open the **Feed The Country** page (`/country`) in the Wix Editor.
 2. Add the embed: **Add Elements (+) → Embed Code → Embed a Site** (some editors call it "Embed HTML" → **Website address**). Paste:
    ```
-   https://ftc-country-finder.netlify.app
+   https://ftc-country-finder.pages.dev
    ```
 3. Size it the same way the monthly map is embedded on /feed-the-city:
    - Desktop: full content width (about 980 px) × **640 px** tall. At least 900 × 640.

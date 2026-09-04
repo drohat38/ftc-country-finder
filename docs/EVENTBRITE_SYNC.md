@@ -4,7 +4,7 @@ The finder reads its events from Eventbrite. This is how that works and how to s
 
 ## What runs
 
-A small program on Netlify (`netlify/functions/events.mjs`, reachable at https://ftc-country-finder.netlify.app/api/events) does this every time the finder loads, and Netlify caches the answer for 5 minutes:
+A small program that runs on the hosting (`functions/api/events.js` on Cloudflare Pages, reachable at https://ftc-country-finder.pages.dev/api/events; `netlify/functions/events.mjs` is the same thing for Netlify) does this when the finder loads, and the edge caches the answer for 5 minutes:
 
 1. Asks Eventbrite for the Tango Charities organization's **live**, **started**, and **draft** events that are today or in the future.
 2. Keeps only events whose title starts with **"Feed The Country"** (any capitalization). Monthly Feed The City events are ignored.
@@ -18,13 +18,12 @@ It only ever reads from Eventbrite (GET requests). It never creates, edits, or d
 1. Log in to Eventbrite with the admin account.
 2. Go to **Account Settings → Developer Links → API Keys** (https://www.eventbrite.com/account-settings/apps). Click **Create API Key**. Any name and website are fine ("Feed The Country finder", https://www.tangocharities.org).
 3. On the key you just created, copy the **Private token**. Do not paste it into email, Slack, or a chat.
-4. Netlify → **ftc-country-finder** → **Site configuration → Environment variables → Add a variable**:
-   - Key: `EVENTBRITE_TOKEN`
+4. Cloudflare → Workers & Pages → **ftc-country-finder** → **Settings → Environment variables → Add variable** (Production):
+   - Name: `EVENTBRITE_TOKEN`
    - Value: the token
-   - Tick **Secret** (Netlify then hides it in its own UI too)
-   - Scopes: all, or just Functions
-5. **Deploys → Trigger deploy → Deploy site**, so the function picks up the variable.
-6. Open https://ftc-country-finder.netlify.app/api/events in a browser. You should see `"ok": true` and a `count`. Then reload the finder.
+   - Type: **Secret** (Cloudflare then never shows it again)
+5. **Deployments → Retry deployment** on the latest deploy, so the function picks up the variable.
+6. Open https://ftc-country-finder.pages.dev/api/events in a browser. You should see `"ok": true` and a `count`. Then reload the finder.
 
 Optional variables: `EVENTBRITE_ORG_ID` (skip the organizations lookup) and `EVENTBRITE_AFF` (attribution code on Register links, default `oddtdtcreator`).
 
@@ -32,7 +31,7 @@ Optional variables: `EVENTBRITE_ORG_ID` (skip the organizations lookup) and `EVE
 
 An Eventbrite private token has the same power as the account that created it: it can read and change every event, order, and attendee list in that account. That is why:
 
-- It is stored only as a **Netlify environment variable** on this one site. It is not in the code repository, not in the finder page, not in the Sheet, not in any document. Only people who can log in to the Netlify team can see or change it.
+- It is stored only as a **Secret environment variable** on the hosting project. It is not in the code repository, not in the finder page, not in the Sheet, not in any document. Only people who can log in to the Cloudflare account can change it, and even they cannot read it back once saved.
 - The function only sends read requests. There is no code path that writes to Eventbrite.
 - The function returns only the fields listed above, never attendee names, emails, or order data.
 - You can revoke the key any time on Eventbrite's API Keys page. The finder then falls back to the Google Sheet (if shared) or the saved snapshot, and keeps working.
@@ -40,7 +39,7 @@ An Eventbrite private token has the same power as the account that created it: i
 
 ## Turning it off
 
-Delete the `EVENTBRITE_TOKEN` variable in Netlify and trigger a deploy, or revoke the key on Eventbrite. The finder keeps working from the Sheet or the snapshot.
+Delete the `EVENTBRITE_TOKEN` variable in the hosting project and redeploy, or revoke the key on Eventbrite. The finder keeps working from the Sheet or the snapshot.
 
 ## The Sheet's own sync (legacy, optional)
 

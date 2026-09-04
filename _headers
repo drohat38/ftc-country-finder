@@ -1,0 +1,14 @@
+# Cloudflare Pages headers (Netlify uses netlify.toml for the same thing).
+# Let Wix and tangocharities.org frame this page, nobody else.
+/*
+  Content-Security-Policy: frame-ancestors https://tangocharities.org https://www.tangocharities.org https://*.wix.com https://*.wixsite.com https://*.filesusr.com https://*.editorx.io
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+
+# Never let a stale copy of the app linger in a browser or on the edge.
+/index.html
+  Cache-Control: public, max-age=0, must-revalidate
+/config.js
+  Cache-Control: public, max-age=0, must-revalidate
+/seed/*
+  Cache-Control: public, max-age=300

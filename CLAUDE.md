@@ -45,3 +45,7 @@ Static, dependency-light page that lists every Feed The Country event (Saturday,
 ## Notify me web app
 
 `apps-script/Notify.gs` is deployed as a web app (deployment `AKfycbzbf_dEogzEEL3F6E9ziiULheVm_YFLsztQocshx2ocyXvjuq_IUns3q3u_dgElWiIpfA`, URL in `config.js` as `notifyPostUrl`). After changing Notify.gs: `cd apps-script && clasp push -f && clasp redeploy AKfycbzbf_dEogzEEL3F6E9ziiULheVm_YFLsztQocshx2ocyXvjuq_IUns3q3u_dgElWiIpfA -d "…"`. `clasp push` alone does NOT update the live web app. The web app only answers once Deven has authorized the script (run Setup from the Sheet menu once); until then it returns Google's authorization page and the finder's form still shows "You're on the list" (no-cors, fire-and-forget), so authorize before launch.
+
+
+## Hosting (2026-09-04)
+Cloudflare Pages is the intended host (no badge): project `ftc-country-finder`, connected to this repo, build output `/`, `functions/api/events.js` = Eventbrite feed, `_headers` = CSP. Env var `EVENTBRITE_TOKEN` (Secret) in the Pages project. The Netlify site + `netlify.toml` + `netlify/functions/events.mjs` still exist as a fallback host.

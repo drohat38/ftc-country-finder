@@ -16,7 +16,7 @@ Eventbrite (source of truth)  →  Netlify function /api/events (holds the token
                                                     ↑ last resort: seed/events.csv snapshot from Sept 2
 ```
 
-- The Eventbrite private token lives only in a **Netlify environment variable** (`EVENTBRITE_TOKEN`). It never reaches the browser, the repo, the Sheet, or the docs.
+- The Eventbrite private token lives only in the hosting project's **environment variable** (`EVENTBRITE_TOKEN`, a Secret on Cloudflare Pages). It never reaches the browser, the repo, the Sheet, or the docs.
 - The Google Sheet does two small jobs: the **Coming soon** tab (City, State, optional Note and Host) lists cities before they exist on Eventbrite, and the **Notify me** tab collects emails from people who ask to be told when a Coming soon city opens. The Events tab is a mirror of Eventbrite kept by the optional hourly sync; it is also the fallback if the feed is ever down.
 
 ## The pieces
@@ -24,8 +24,8 @@ Eventbrite (source of truth)  →  Netlify function /api/events (holds the token
 | Piece | Where | Who touches it |
 |---|---|---|
 | Eventbrite (the only thing to edit day to day) | https://www.eventbrite.com/organizations/events | Nick |
-| The live finder (embed this in Wix) | https://ftc-country-finder.netlify.app | Nobody |
-| Netlify site (hosting + the Eventbrite feed function) | https://app.netlify.com/projects/ftc-country-finder · site id 33eca06f-9487-48e3-9df2-8ceea02fff63, team devenr | Deven |
+| The live finder (embed this in Wix) | https://ftc-country-finder.pages.dev (Cloudflare Pages, no badge; see "0 - Cloudflare Pages") | Nobody |
+| Hosting + the Eventbrite feed function | Cloudflare Pages project `ftc-country-finder`, connected to the GitHub repo; every push to main redeploys. (A Netlify copy at ftc-country-finder.netlify.app exists from the build and can be deleted.) | Deven |
 | Google Sheet: "Coming soon" tab + "Notify me" signups | https://docs.google.com/spreadsheets/d/18plECfE3DnjTu_31KXJABJA-I7uTCNqrCv8Ndf8OsT4/edit | Nick |
 | Drive folder with these docs | https://drive.google.com/drive/folders/1B9qmQTwgzmhjNGgGIFTHWqfJykVjK4Gb | Deven / Nick |
 | Source code | https://github.com/drohat38/ftc-country-finder (private) | Deven |
