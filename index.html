@@ -533,7 +533,7 @@ function mkMarkers(){
   });
   if(!clusterer&&window.markerClusterer){
     clusterer=new markerClusterer.MarkerClusterer({map,markers:[],
-      algorithm:new markerClusterer.SuperClusterAlgorithm({radius:70,maxZoom:11}),
+      algorithm:new markerClusterer.SuperClusterAlgorithm({radius:34,maxZoom:9,minPoints:3}),
       renderer:{render:({count,position,markers})=>{const soonOnly=markers.every(mk=>!mk.ftcLive);return new google.maps.Marker({position,icon:clusterIcon(count,soonOnly),label:{text:String(count),color:soonOnly?"#00264D":"#fff",fontFamily:"Poppins, sans-serif",fontWeight:"700",fontSize:count>=10?"14px":"13px"},zIndex:Number(google.maps.Marker.MAX_ZINDEX)+count,title:`${count} events here — tap to zoom in`})}},
       onClusterClick:(e,cluster,mp)=>{if(oIW)oIW.close();oIW=null;const b=cluster.bounds;mp.fitBounds(b,{top:60,right:60,bottom:60,left:mob()?60:450});if(mp.getZoom()>14)mp.setZoom(14)}
     });
