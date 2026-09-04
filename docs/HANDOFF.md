@@ -25,7 +25,7 @@ Plus the Sheet's "Coming soon" tab. Fallback if the feed is down: the Sheet's Ev
 | Hosting + the Eventbrite feed function | Cloudflare Pages project `ftc-country-finder`, connected to the GitHub repo; every push to main redeploys. (A Netlify copy at ftc-country-finder.netlify.app exists from the build and can be deleted.) | Deven |
 | Google Sheet: "Coming soon" tab + "Notify me" signups | https://docs.google.com/spreadsheets/d/18plECfE3DnjTu_31KXJABJA-I7uTCNqrCv8Ndf8OsT4/edit | Nick |
 | Drive folder with these docs | https://drive.google.com/drive/folders/1B9qmQTwgzmhjNGgGIFTHWqfJykVjK4Gb | Deven / Nick |
-| Source code | https://github.com/drohat38/ftc-country-finder (private) | Deven |
+| Source code | https://github.com/drohat38/ftc-country-finder (public) | Deven |
 | Monthly map it is modeled on | https://github.com/drohat38/feed-the-city-event-map | Deven |
 
 ## One-time setup (Deven, about 15 minutes)
