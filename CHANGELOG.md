@@ -2,6 +2,12 @@
 
 Every user-visible change, newest first. Written so Nick can read it.
 
+## 2026-09-04
+- **Feed The Country look.** The real Feed The Country lockup in the brand card with a live tally (cities, states, signed up, days to go); a custom map style (navy water, warm land, quiet roads); orange pins for open registration, dashed gold pins for coming soon; count bubbles that group dense areas (Dallas–Fort Worth) and zoom in when tapped; capacity bars on cards; a copy-link button in each pin's window (?city=…); "today" and "after" modes.
+- **Coming soon tab.** Nick lists cities not yet on Eventbrite on a "Coming soon" tab (City, State). The tools geocode them; the finder shows them as gold pins. Eventbrite wins when the event exists.
+- **Notify me: store only.** Removed the per-signup email and the notify_email setting; no address lives in the Sheet.
+- Removed Directions everywhere.
+
 ## 2026-09-03
 - **Notify me now works.** On a Coming soon city the button opens an email box inside the card; the signup is saved to a new "Notify me" tab in the Google Sheet through the Sheet's script (deployed as a web app), with duplicate and flood protection and a honeypot. Set `notify_email` on the Settings tab to get an email per signup. Deven asked for this and for **Directions to be removed** from cards, info windows and the phone sheet; done.
 - **Rebuilt on the monthly map's design and on the Eventbrite API.** Deven pointed at the monthly Feed The City event map as the standard: the finder is now that same app (Google Maps, orange brand bar, search + list panel, mobile bottom sheet, filters) adapted for Feed The Country. Events come straight from Eventbrite through a new Netlify Function at /api/events; the Eventbrite token lives only in a Netlify environment variable. The Google Sheet is now an optional overrides layer; the seed CSV is the last resort. Draft Eventbrite events show as Coming soon; live ones show Register with signed-up and spots-left counts. Removed the drawn SVG map, the MapLibre version, the ZIP/city lookup tables, and the separate styles/app files.

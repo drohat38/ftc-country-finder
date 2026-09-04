@@ -38,12 +38,7 @@ function doPost(e) {
       var sh = ensureNotifySheet_();
       var map = notifyHeaderMap_(sh);
       var dup = isDuplicate_(sh, map, email, city);
-      var emailed = '';
-      if (!dup) {
-        var to = notifyEmailSetting_();
-        if (to) { try { sendNotifyEmail_(to, email, city, state); emailed = 'Yes'; } catch (mailErr) { emailed = 'Failed: ' + mailErr; } }
-        sh.appendRow([new Date(), email, city, state, source, emailed]);
-      }
+      if (!dup) sh.appendRow([new Date(), email, city, state, source, '']);
       out.ok = true; out.duplicate = dup;
     } finally { lock.releaseLock(); }
   } catch (err) {
@@ -84,22 +79,13 @@ function isDuplicate_(sh, map, email, city) {
   }
   return false;
 }
-function notifyEmailSetting_() {
+// Signups are stored only. No email is sent anywhere; nobody's address lives in the Sheet.
+function notifyEmailSetting_unused_() {
   var ss = SpreadsheetApp.getActiveSpreadsheet(), sh = ss.getSheetByName(CONFIG.SETTINGS_SHEET);
   if (!sh || sh.getLastRow() < 2) return '';
   var rows = sh.getRange(2, 1, sh.getLastRow() - 1, 2).getValues();
   for (var i = 0; i < rows.length; i++) if (str_(rows[i][0]).toLowerCase() === 'notify_email') return str_(rows[i][1]);
   return '';
-}
-function sendNotifyEmail_(to, email, city, state) {
-  var where = [city, state].filter(Boolean).join(', ') || 'a city';
-  MailApp.sendEmail({
-    to: to,
-    subject: 'Feed The Country: someone wants ' + where,
-    body: email + ' asked to be notified when the ' + where + ' Feed The Country event opens for registration.\n\n' +
-      'All signups: ' + SpreadsheetApp.getActiveSpreadsheet().getUrl() + ' (tab "Notify me")\n\n' +
-      'When the event is live on Eventbrite, email the people listed for that city with the Register link.'
-  });
 }
 function rateOk_() {
   // Cheap flood guard: at most NOTIFY.MAX_PER_MINUTE signups per minute across everyone.

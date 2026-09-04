@@ -6,7 +6,7 @@ Built 2–3 September 2026 by Deven Rohatgi for Tango Charities. Nothing on the 
 
 The same event finder volunteers already use for monthly Feed The City events (map on the right, search and list on the left, bottom sheet on phones), rebuilt for Feed The Country on Saturday, September 19, 2026. **It pulls its events straight from Eventbrite.** Nick creates or edits an event on Eventbrite and the finder shows the change within a few minutes: venue, address, time, Register link, how many people have signed up, and spots left. Nothing to retype anywhere.
 
-Draft (unpublished) Eventbrite events whose title starts with "Feed The Country" show as **Coming soon**. Published events show **Registration open** with a Register button.
+Published Eventbrite events show **Registration open** with a Register button, a capacity bar ("45 signed up · 12 spots left") and the venue. Cities that are not on Eventbrite yet come from the Sheet's **Coming soon** tab (Nick types City and State) and show as gold **Coming soon** pins with no Register button. Draft Eventbrite events also count as Coming soon.
 
 ## How the data flows
 
@@ -17,7 +17,7 @@ Eventbrite (source of truth)  →  Netlify function /api/events (holds the token
 ```
 
 - The Eventbrite private token lives only in a **Netlify environment variable** (`EVENTBRITE_TOKEN`). It never reaches the browser, the repo, the Sheet, or the docs.
-- The Google Sheet is optional. If it is shared as "Anyone with the link: Viewer", it can add a **Host** name to a card, hide a city (**Paused** = Yes), and list a city that has no Eventbrite event yet (shows as Coming soon). If the Sheet is never shared, everything still works from Eventbrite.
+- The Google Sheet does two small jobs: the **Coming soon** tab (City, State, optional Note and Host) lists cities before they exist on Eventbrite, and the **Notify me** tab collects emails from people who ask to be told when a Coming soon city opens. The Events tab is a mirror of Eventbrite kept by the optional hourly sync; it is also the fallback if the feed is ever down.
 
 ## The pieces
 
@@ -26,7 +26,7 @@ Eventbrite (source of truth)  →  Netlify function /api/events (holds the token
 | Eventbrite (the only thing to edit day to day) | https://www.eventbrite.com/organizations/events | Nick |
 | The live finder (embed this in Wix) | https://ftc-country-finder.netlify.app | Nobody |
 | Netlify site (hosting + the Eventbrite feed function) | https://app.netlify.com/projects/ftc-country-finder · site id 33eca06f-9487-48e3-9df2-8ceea02fff63, team devenr | Deven |
-| Google Sheet (optional overrides) | https://docs.google.com/spreadsheets/d/18plECfE3DnjTu_31KXJABJA-I7uTCNqrCv8Ndf8OsT4/edit | Nick, optional |
+| Google Sheet: "Coming soon" tab + "Notify me" signups | https://docs.google.com/spreadsheets/d/18plECfE3DnjTu_31KXJABJA-I7uTCNqrCv8Ndf8OsT4/edit | Nick |
 | Drive folder with these docs | https://drive.google.com/drive/folders/1B9qmQTwgzmhjNGgGIFTHWqfJykVjK4Gb | Deven / Nick |
 | Source code | https://github.com/drohat38/ftc-country-finder (private) | Deven |
 | Monthly map it is modeled on | https://github.com/drohat38/feed-the-city-event-map | Deven |
@@ -40,7 +40,7 @@ Eventbrite (source of truth)  →  Netlify function /api/events (holds the token
    ```
    (and `http://localhost:8080/*` if you want to test locally). Until then the list works but the map area shows a "Map key needs this site" card. If you would rather not touch the existing key, create a new key in the same project with Maps JavaScript API + Geocoding API enabled and those referrers, and put it in `config.js` as `googleMapsKey`.
 3. **Embed in Wix.** Follow "4 - Wix Embed Steps".
-4. **Run Setup in the Sheet once** (Feed The Country Tools → Setup & repair → Setup / repair sheet, authorize when asked). This authorizes the script that saves Notify me signups and creates the Notify me tab. Then, optionally, share the Sheet (Anyone with the link: Viewer) if you want Host names or manual hides to show on the finder.
+4. **Run Setup in the Sheet once more** (Feed The Country Tools → Setup & repair → Setup / repair sheet). This creates the **Coming soon** tab with an example row. The Sheet is already shared, so the finder reads it.
 
 ## Day to day (Nick)
 
@@ -48,8 +48,8 @@ Everything happens on Eventbrite:
 
 - **New city:** create the event with a title that starts with **Feed The Country** and the city, e.g. `Feed The Country Tulsa: A Nationwide Day of Volunteering`. Set the venue. Publish when ready. It appears on the finder within about 5 minutes.
 - **Change a venue or time:** edit the Eventbrite event. Done.
-- **Not ready to open registration:** leave the event as a draft. It shows as Coming soon.
-- **Remove a city:** cancel or delete the event on Eventbrite. (Or, if the Sheet is shared, tick Paused on its row.)
+- **City with no event yet:** type City and State on the Sheet's **Coming soon** tab. It shows as a gold Coming soon pin within about 10 minutes. Once the Eventbrite event exists, the Sheet row is ignored automatically.
+- **Remove a city:** cancel or delete the event on Eventbrite. For a Coming soon row, tick Hide or delete the row.
 
 The city name comes from the title: whatever sits between "Feed The Country" and the colon. `Feed The Country Dallas (North): …` becomes "Dallas (North)". The state comes from the venue address.
 
@@ -61,7 +61,7 @@ The city name comes from the title: whatever sits between "Feed The Country" and
 
 ## "Notify me" signups
 
-On a Coming soon city, volunteers type their email into the card. Each signup lands in the **Notify me** tab of the Google Sheet (timestamp, email, city, state). Put Nick's address in the Settings tab as `notify_email` and he also gets an email per signup. When a city goes live on Eventbrite, email the people listed for that city with the Register link. This needs the script authorized once (step 4 below happens automatically when you run Setup).
+Parked for now. The button still works: on a Coming soon city, volunteers can type their email and it lands in the **Notify me** tab (timestamp, email, city, state). Nothing is emailed to anyone and no address is stored in the Sheet's settings. When a city goes live, whoever runs comms can filter that tab by city and email the Register link.
 
 ## After September 19
 

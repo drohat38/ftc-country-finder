@@ -13,6 +13,9 @@ window.FTC_COUNTRY_CONFIG = {
   sheetCsvUrl: "https://docs.google.com/spreadsheets/d/18plECfE3DnjTu_31KXJABJA-I7uTCNqrCv8Ndf8OsT4/gviz/tq?tqx=out:csv&gid=0",
   settingsUrl: "https://docs.google.com/spreadsheets/d/18plECfE3DnjTu_31KXJABJA-I7uTCNqrCv8Ndf8OsT4/gviz/tq?tqx=out:csv&sheet=Settings",
 
+  // The "Coming soon" tab: cities Nick lists before they exist on Eventbrite (City, State, optional Note/Host).
+  comingSoonUrl: "https://docs.google.com/spreadsheets/d/18plECfE3DnjTu_31KXJABJA-I7uTCNqrCv8Ndf8OsT4/gviz/tq?tqx=out:csv&sheet=Coming%20soon",
+
   // 3) Last resort: snapshot shipped with the site (2026-09-02).
   seedUrl: "seed/events.csv",
 

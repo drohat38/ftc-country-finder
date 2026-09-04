@@ -25,7 +25,6 @@ var CONFIG = {
   SETTINGS_SHEET: 'Settings',
   SETTINGS: [
     ['what_to_bring', 'Enough for 25–30 meals: sliced bread (wheat preferred), pre-packaged deli meat, sliced cheese, yellow mustard, easy-peel tangerines, a large bag of chips, and zip-top sandwich bags. The first 30 minutes are arrival time; packing starts after that. Full details on each event\'s Eventbrite page.', 'One line shown above the city list on the finder.'],
-    ['notify_email', '', 'Optional. Email address that gets a message each time someone clicks "Notify me" on a Coming soon city. Signups always land in the "Notify me" tab.'],
     ['notify_url', '', 'Optional. Leave blank: the finder shows its own email box. Put a link here only if you want "Notify me" to open a form instead.'],
     ['host_url', 'https://www.tangocharities.org/start', 'Shown when someone searches a place with nothing nearby: "Bring Feed The City to your town".'],
     ['hero_note', '', 'Optional. Replaces the sentence under the big title on the finder. Leave blank for the default.'],
@@ -249,6 +248,7 @@ function setupSheet() {
     applyFormatting_(sh, map);
     buildSettings_();
     ensureNotifySheet_();
+    ensureComingSoonSheet_();
     buildStartHere_();
     SpreadsheetApp.getActiveSpreadsheet().setActiveSheet(sh);
     toast_('Sheet is set up. Next: Feed The Country Tools > Setup & repair > Install auto-update trigger.');
@@ -473,10 +473,55 @@ function installEditTrigger() {
   if (!exists) ScriptApp.newTrigger('onEditInstallable').forSpreadsheet(SpreadsheetApp.getActiveSpreadsheet()).onEdit().create();
   toast_(exists ? 'Auto-update trigger was already installed.' : 'Auto-update trigger installed. Edits now refresh Status and Last Updated automatically.');
 }
+/* ---------------- "Coming soon" tab: cities Nick lists before they exist on Eventbrite ---------------- */
+var COMING_SOON = { SHEET: 'Coming soon', HEADERS: ['City', 'State', 'Note', 'Host', 'Hide', 'Latitude', 'Longitude', 'Status'] };
+function ensureComingSoonSheet_() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sh = ss.getSheetByName(COMING_SOON.SHEET);
+  if (!sh) {
+    sh = ss.insertSheet(COMING_SOON.SHEET, 1);
+    sh.getRange(1, 1, 1, COMING_SOON.HEADERS.length).setValues([COMING_SOON.HEADERS]);
+    sh.getRange(2, 1, 1, 3).setValues([['Tulsa', 'OK', 'Example row. Delete me. Type a city and its two-letter state; the finder shows it as Coming soon.']]);
+  }
+  var c = CONFIG.COLORS;
+  sh.getRange(1, 1, 1, COMING_SOON.HEADERS.length).setBackground(c.header).setFontColor(c.headerText).setFontWeight('bold');
+  sh.setFrozenRows(1);
+  sh.setColumnWidth(1, 170); sh.setColumnWidth(2, 60); sh.setColumnWidth(3, 320); sh.setColumnWidth(4, 150); sh.setColumnWidth(5, 60);
+  var maxRows = Math.max(sh.getMaxRows(), 100);
+  sh.getRange(2, 5, maxRows - 1, 1).setDataValidation(SpreadsheetApp.newDataValidation().requireCheckbox('Yes', 'No').setAllowInvalid(false).setHelpText('Tick to take this city off the finder').build());
+  sh.getRange(2, 2, maxRows - 1, 1).setDataValidation(SpreadsheetApp.newDataValidation().requireTextLengthBetween(2, 2).setAllowInvalid(true).setHelpText('Two-letter state code, e.g. TX').build());
+  sh.getRange(1, 1, 1, COMING_SOON.HEADERS.length).setNote('Cities that are not on Eventbrite yet. The finder shows them as "Coming soon". Once the Eventbrite event exists, this row is ignored automatically; delete it whenever.');
+  [6, 7, 8].forEach(function (col) { sh.hideColumns(col); });
+  sh.getProtections(SpreadsheetApp.ProtectionType.RANGE).forEach(function (p) { if (/\[FTC\]/.test(p.getDescription())) p.remove(); });
+  var p = sh.getRange(2, 6, maxRows - 1, 3).protect(); p.setDescription('[FTC] Filled by the tools'); p.setWarningOnly(true);
+  sh.setTabColor(c.gold);
+  for (var r = 2; r <= sh.getLastRow(); r++) comingSoonRow_(sh, r);
+  return sh;
+}
+function comingSoonRow_(sh, row) {
+  var vals = sh.getRange(row, 1, 1, COMING_SOON.HEADERS.length).getValues()[0];
+  var city = str_(vals[0]), state = str_(vals[1]).toUpperCase();
+  if (!city && !state) return;
+  if (state && state !== str_(vals[1])) sh.getRange(row, 2).setValue(state);
+  var lat = parseFloat(vals[5]), lng = parseFloat(vals[6]);
+  if (city && state && !(isFinite(lat) && isFinite(lng))) {
+    try {
+      var res = Maps.newGeocoder().setRegion('us').geocode(city.replace(/\s*\(.*?\)\s*/g, '') + ', ' + state);
+      if (res && res.status === 'OK' && res.results && res.results.length) {
+        var loc = res.results[0].geometry.location;
+        sh.getRange(row, 6, 1, 2).setValues([[loc.lat, loc.lng]]);
+        lat = loc.lat; lng = loc.lng;
+      }
+    } catch (err) { /* leave blank; the finder lists the city without a pin */ }
+  }
+  var status = !city || !state ? 'Needs city and state' : (str_(vals[4]).toLowerCase() === 'yes' ? 'Hidden' : (isFinite(lat) ? 'On the finder' : 'Listed, no pin yet'));
+  sh.getRange(row, 8).setValue(status);
+}
 function onEditInstallable(e) {
   try {
     if (!e || !e.range) return;
     var sh = e.range.getSheet();
+    if (sh.getName() === COMING_SOON.SHEET) { if (e.range.getRow() >= 2) comingSoonRow_(sh, e.range.getRow()); return; }
     if (sh.getName() !== CONFIG.SHEET_NAME) return;
     var row = e.range.getRow();
     if (row < 2) return;

@@ -2,7 +2,9 @@
 
 **Day to day, everything happens on Eventbrite.** Create, edit, publish, or cancel the Eventbrite event and the finder follows within about 5 minutes. Titles must start with "Feed The Country" plus the city, e.g. `Feed The Country Tulsa: A Nationwide Day of Volunteering`. Drafts show as Coming soon; published events show Register.
 
-The Google Sheet below is **optional**. Use it only to add a Host name to a card, hide a city that Eventbrite still lists, or list a city that has no Eventbrite event yet. It has to be shared as "Anyone with the link: Viewer" for the finder to read it.
+**Cities that are not on Eventbrite yet** go on the Sheet's **Coming soon** tab: type the City and its two-letter State (optional Note, e.g. "Host confirming venue", and Host). The finder shows a gold Coming soon pin within about 10 minutes. Once the Eventbrite event exists, that row is ignored automatically. Tick **Hide** to take a row off the finder, or just delete it.
+
+The rest of the Sheet (the Events tab) is a mirror of Eventbrite kept by the tools. You do not need to edit it.
 
 ---
 
@@ -52,14 +54,13 @@ Paste the Eventbrite link into `EventbriteURL`. The link tidies itself (https, a
 
 ## "Notify me" signups
 
-The **Notify me** tab fills up by itself: one row per person who asked to be told when a Coming soon city opens (timestamp, email, city, state). Put your own address in the Settings tab as `notify_email` to get an email each time. When a city goes live, filter the tab by that city and email those people the Register link.
+The **Notify me** tab fills up by itself: one row per person who asked to be told when a Coming soon city opens (timestamp, email, city, state). Nothing is emailed automatically. When a city goes live, filter the tab by that city and email those people the Register link.
 
 ## Words and links on the finder (Settings tab)
 
 The **Settings** tab has a few Key / Value rows. Edit the Value column only:
 
 - `what_to_bring` — the one-line shopping list shown in each event's details card.
-- `notify_email` — your address, to get an email per Notify me signup.
 - `notify_url` — leave blank. Only fill it if you want the Notify me button to open a form somewhere else instead of the built-in email box.
 
 ## Registered and Capacity
